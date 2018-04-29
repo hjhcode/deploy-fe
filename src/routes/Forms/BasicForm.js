@@ -58,7 +58,6 @@ export default class BasicForms extends PureComponent {
         sm: { span: 10, offset: 7 },
       },
     };
-
     return (
       <PageHeaderLayout
         title="基础表单"

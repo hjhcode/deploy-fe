@@ -154,6 +154,21 @@ const menuData = [
       },
     ],
   },
+  {
+    name: '工程',
+    icon: 'medicine-box',
+    path: 'project',
+  },
+  {
+    name: '构建',
+    icon: 'table',
+    path: 'build',
+  },
+  {
+    name: '部署',
+    icon: 'table',
+    path: 'deploy',
+  },
 ];
 
 function formatter(data, parentPath = '/', parentAuthority) {
