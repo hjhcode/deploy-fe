@@ -50,7 +50,7 @@ class CusTableDemo extends React.Component {
   }
 
   componentDidMount() {
-    // this.loadProjectList();
+    this.loadProjectList();
   }
 
   loadProjectList () {
@@ -59,16 +59,18 @@ class CusTableDemo extends React.Component {
       size: 10,
     };
     $.ajax({
-      url:`http://128.0.0.175:9001/authv1/project/show?${stringify(params)}`,
-      method: 'GET',
-      success: function (res) {
+      // url:`http://128.0.0.174:9001/authv1/project/show?${stringify(params)}`,
+      url:`http://128.0.0.174:9001/authv1/project/show`,
+      type: 'GET',
+      success: (res) => {
+        console.log(res);
         if (res.code === 0) {
           this.setState({
             data: res.data.datas,
           });
         }
       },
-      error: function (error) {
+      error: (error) => {
         message.error('请求失败！');
       },
     });
@@ -97,19 +99,20 @@ class CusTableDemo extends React.Component {
 
   delProject (id) {
     $.ajax({
-      url: '/authv1/project/del',
-      mathod: 'POST',
-      body: {
-        problem_id: id,
+      url: 'http://128.0.0.174:9001/authv1/project/del',
+      type: 'POST',
+      data: {
+        project_id: id,
       },
-      success: function (res) {
+      dataType: 'json',
+      success: (res) => {
         if (res) {
-          message.success('修改成功！');
+          message.success('删除成功！');
           this.loadProjectList();
         }
       },
-      error: function () {
-        message.error('修改失败！');
+      error: () => {
+        message.error('删除失败！');
       },
     });
   }
@@ -185,7 +188,7 @@ class CusTableDemo extends React.Component {
       dataIndex: 'account_id',
       key: 'account_id',
     }, {
-      title: '项目docker路径',
+      title: 'Dockerfile',
       dataIndex: 'git_docker_path',
       key: 'git_docker_path',
     },{
@@ -239,7 +242,7 @@ class CusTableDemo extends React.Component {
               </Col>
             </Row>
           </div>
-          <Table {...this.state} columns={columns} dataSource={data} />
+          <Table {...this.state} columns={columns} dataSource={this.state.data} />
         </Card>
         <Modal
           title={titleName}

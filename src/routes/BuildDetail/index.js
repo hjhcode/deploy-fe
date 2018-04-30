@@ -2,13 +2,7 @@ import React, { Component } from 'react';
 import Debounce from 'lodash-decorators/debounce';
 import Bind from 'lodash-decorators/bind';
 import { connect } from 'dva';
-import {
-  Button,
-  Steps,
-  Card,
-  Popover,
-  Badge,
-} from 'antd';
+import { Button, Steps, Card, Popover, Badge } from 'antd';
 import DescriptionList from 'components/DescriptionList';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './index.less';
@@ -17,7 +11,6 @@ const { Step } = Steps;
 const { Description } = DescriptionList;
 
 const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth;
-
 
 const description = (
   <DescriptionList className={styles.headerList} size="small" col="2">
@@ -31,8 +24,6 @@ const description = (
     <Description term="备注">请于两个工作日内确认</Description>
   </DescriptionList>
 );
-
-
 
 const popoverContent = (
   <div style={{ width: 160 }}>
@@ -55,8 +46,6 @@ const customDot = (dot, { status }) =>
     dot
   );
 
-
-
 @connect(({ profile }) => ({
   profile,
 }))
@@ -66,7 +55,6 @@ export default class AdvancedProfile extends Component {
   };
 
   componentDidMount() {
-
     this.setStepDirection();
     window.addEventListener('resize', this.setStepDirection);
   }
@@ -75,7 +63,6 @@ export default class AdvancedProfile extends Component {
     window.removeEventListener('resize', this.setStepDirection);
     this.setStepDirection.cancel();
   }
-
 
   @Bind()
   @Debounce(200)
@@ -93,15 +80,19 @@ export default class AdvancedProfile extends Component {
     }
   }
 
-  renderButton (num) {
+  renderButton(num) {
     if (num === 0) {
-      return (<Button type="primary" icon="poweroff" onClick={this.startBuild}>
-        开始构建
-      </Button>)
+      return (
+        <Button type="primary" icon="poweroff" onClick={this.startBuild}>
+          开始构建
+        </Button>
+      );
     } else if (num === 1) {
-      return (<Button type="primary" loading >
-        正在构建
-      </Button>);
+      return (
+        <Button type="primary" loading>
+          正在构建
+        </Button>
+      );
     } else {
       return '';
     }
@@ -112,28 +103,29 @@ export default class AdvancedProfile extends Component {
 
     return (
       <PageHeaderLayout
-        title="单号：234231029431"
+        title="工程1"
         logo={
           <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png" />
         }
         content={description}
       >
-        <Card title="流程进度" style={{ marginBottom: 24 }} bordered={false}>
-          <div style={{display: 'flex', justifyContent: 'space-between'}}>
-            <Steps direction={stepDirection} progressDot={customDot} current={0} style={{width: '88%'}}>
-              <Step title="未构建"  />
+        <Card title="构建进度" style={{ marginBottom: 24 }} bordered={false}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Steps
+              direction={stepDirection}
+              progressDot={customDot}
+              current={0}
+              style={{ width: '88%' }}
+            >
+              <Step title="未构建" />
               <Step title="构建中" />
               <Step title="完成" />
             </Steps>
-            <div style={{width: '10%'}}>
-              { this.renderButton(0)}
-            </div>
+            <div style={{ width: '10%' }}>{this.renderButton(0)}</div>
           </div>
         </Card>
         <Card title="日志信息" style={{ marginBottom: 24 }} bordered={false}>
-          <div className={styles.noData}>
-
-          </div>
+          <div className={styles.noData} />
         </Card>
       </PageHeaderLayout>
     );

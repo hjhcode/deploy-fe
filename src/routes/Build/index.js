@@ -6,27 +6,30 @@ import { Table, Badge, Card, message } from 'antd';
 import moment from 'moment/moment';
 import styles from './index.less';
 
-
 const statusMap = ['processing', 'success', 'error'];
-const status = ['进行中', '成功', '失败'];
+const status = ['待开始', '进行中', '成功', '失败'];
 
-const data  = [];
+const data = [];
 for (let i = 0; i < 20; i++) {
   data.push({
     key: i,
-    id: i+ 1,
+    id: i + 1,
     account_id: 'www@qq.com',
-    constructor_start: moment().subtract(i, 'days').startOf('day').format('YYYY-MM-DD HH:mm:SS'),
-    constructor_end: moment().subtract(i, 'days').startOf('day').format('YYYY-MM-DD HH:mm:SS'),
+    constructor_start: moment()
+      .subtract(i, 'days')
+      .startOf('day')
+      .format('YYYY-MM-DD HH:mm:SS'),
+    constructor_end: moment()
+      .subtract(i, 'days')
+      .startOf('day')
+      .format('YYYY-MM-DD HH:mm:SS'),
     constructor_statu: Math.round(Math.random() * 2),
     mirror_id: i + 1,
     project_id: i + 1,
   });
 }
 
-
 class StandardTable extends PureComponent {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -36,21 +39,17 @@ class StandardTable extends PureComponent {
   }
 
   componentDidMount() {
-    const params = {
-      page: 1,
-      size: 10,
-    };
     $.ajax({
-      url:`http://128.0.0.175:9001/authv1/construct/show?${stringify(params)}`,
-      method: 'GET',
-      success: function (res) {
+      url: `http://128.0.0.174:9001/authv1/construct/show`,
+      type: 'GET',
+      success: res => {
         if (res.code === 0) {
           this.setState({
             data: res.data.datas,
           });
         }
       },
-      error: function () {
+      error: () => {
         message.error('请求失败！');
       },
     });
@@ -71,17 +70,17 @@ class StandardTable extends PureComponent {
       {
         key: 'constructor_start',
         title: '开始时间',
-        dataIndex: 'constructor_start',
+        dataIndex: 'construct_start',
       },
       {
-        key: 'constructor_end',
+        key: 'construct_end',
         title: '结束时间',
-        dataIndex: 'constructor_end',
+        dataIndex: 'construct_end',
       },
       {
-        key: 'constructor_statu',
+        key: 'construct_statu',
         title: '构建状态',
-        dataIndex: 'constructor_statu',
+        dataIndex: 'construct_statu',
         render(val) {
           return <Badge status={statusMap[val]} text={status[val]} />;
         },
@@ -91,7 +90,7 @@ class StandardTable extends PureComponent {
         title: '详情',
         dataIndex: 'id',
         render(val) {
-          return <Link to={`/detail/build/${val}`}>详情</Link>
+          return <Link to={`/detail/build/${val}`}>详情</Link>;
         },
       },
     ];
@@ -101,11 +100,7 @@ class StandardTable extends PureComponent {
     return (
       <Card border="false">
         <div className={styles.tableList}>
-          <Table
-            loading={loading}
-            dataSource={data}
-            columns={columns}
-          />
+          <Table loading={loading} dataSource={this.state.data} columns={columns} />
         </div>
       </Card>
     );
