@@ -132,6 +132,8 @@ class CusTableDemo extends React.Component {
       success: function(res) {
         if (res.code === 0) {
           message.success('构建成功！');
+          id = res.data;
+          window.location.href=`http://localhost:8000/#/detail/build/${id}`
         }
       },
       error: function() {
