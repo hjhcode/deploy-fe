@@ -1,10 +1,11 @@
 import React from 'react';
 import $ from 'jquery';
 import moment from 'moment';
-import { stringify } from 'qs';
-import { Row, Col, Card, Table, Input, Modal, Button,  Popconfirm, message, Divider  } from 'antd';
+import {stringify} from 'qs';
+import {Row, Col, Card, Table, Input, Modal, Button, Popconfirm, message, Divider} from 'antd';
 import BasicForm from './BasicForm';
-const { Search } = Input;
+
+const {Search} = Input;
 
 // function subscription(state) {
 //   const type = state > 80 ? 'success' : state < 30 ? 'error' : 'info';
@@ -53,14 +54,14 @@ class CusTableDemo extends React.Component {
     this.loadProjectList();
   }
 
-  loadProjectList () {
+  loadProjectList() {
     const params = {
       page: 1,
       size: 10,
     };
     $.ajax({
       // url:`http://128.0.0.174:9001/authv1/project/show?${stringify(params)}`,
-      url:`http://128.0.0.174:9001/authv1/project/show`,
+      url: `http://128.0.0.174:9001/authv1/project/show`,
       type: 'GET',
       success: (res) => {
         console.log(res);
@@ -76,28 +77,29 @@ class CusTableDemo extends React.Component {
     });
   }
 
-  handleOk () {
+  handleOk() {
     this.setState({
       visible: false,
     })
   }
 
-  handleCancel () {
+  handleCancel() {
     this.setState({
       visible: false,
     })
   }
 
-  addProject () {
+  addProject() {
     this.setState({
       visible: true,
       type: 'add',
       project: {},
       titleName: '添加工程',
     })
+
   }
 
-  delProject (id) {
+  delProject(id) {
     $.ajax({
       url: 'http://128.0.0.174:9001/authv1/project/del',
       type: 'POST',
@@ -117,7 +119,7 @@ class CusTableDemo extends React.Component {
     });
   }
 
-  buildProject (id) {
+  buildProject(id) {
     $.ajax({
       url: '/authv1/project/constructor',
       mathod: 'POST',
@@ -135,7 +137,7 @@ class CusTableDemo extends React.Component {
     });
   }
 
-  searchProject (value) {
+  searchProject(value) {
     const params = {
       page: 1,
       size: 10,
@@ -157,7 +159,7 @@ class CusTableDemo extends React.Component {
     });
   }
 
-  closeModal () {
+  closeModal() {
     this.setState({
       visible: false,
     });
@@ -191,31 +193,33 @@ class CusTableDemo extends React.Component {
       title: 'Dockerfile',
       dataIndex: 'git_docker_path',
       key: 'git_docker_path',
-    },{
+    }, {
       title: '操作',
       dataIndex: 'id',
       key: 'action',
       render: (id, record) => (
         <span>
           <a onClick={() => {
-              this.setState({
-                project: record,
-                type: 'update',
-                visible: true,
-                titleName: '修改工程',
-              });
-            }}
+            this.setState({
+              project: record,
+              type: 'update',
+              visible: true,
+              titleName: '修改工程',
+            });
+          }}
           >
             修改
           </a>
-          <Divider type="vertical" />
+          <Divider type="vertical"/>
           <a onClick={() => this.buildProject(id)}>构建</a>
-          <Divider type="vertical" />
+          <Divider type="vertical"/>
           <Popconfirm
             placement="left"
             title={`您确认删除 ${record.project_name} 项目`}
             okText="是" cancelText="否"
-            onConfirm={() => { this.delProject(id) }}
+            onConfirm={() => {
+              this.delProject(id)
+            }}
           >
             <a>删除</a>
           </Popconfirm>
@@ -223,7 +227,7 @@ class CusTableDemo extends React.Component {
       ),
     }];
 
-    const { visible, titleName, project, type } = this.state;
+    const {visible, titleName, project, type} = this.state;
     return (
       <div>
         <Card hoverable>
@@ -232,17 +236,17 @@ class CusTableDemo extends React.Component {
               <Col xs={24} sm={24} md={12} lg={8} xl={8}>
                 <h2>工程列表</h2>
               </Col>
-              <Col xs={24} sm={24} md={12} lg={16} xl={16} style={{ textAlign: 'right' }}>
+              <Col xs={24} sm={24} md={12} lg={16} xl={16} style={{textAlign: 'right'}}>
                 <Button type="primary" style={{marginRight: 20}} onClick={this.addProject}>新增项目</Button>
                 <Search
                   placeholder="输入工程名进行搜索"
-                  style={{ width: 200 }}
+                  style={{width: 200}}
                   onSearch={value => this.searchProject(value)}
                 />
               </Col>
             </Row>
           </div>
-          <Table {...this.state} columns={columns} dataSource={this.state.data} />
+          <Table {...this.state} columns={columns} dataSource={this.state.data}/>
         </Card>
         <Modal
           title={titleName}
