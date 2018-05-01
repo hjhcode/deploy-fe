@@ -169,6 +169,11 @@ const menuData = [
     icon: 'table',
     path: 'deploy',
   },
+  {
+    name: '服务',
+    icon: 'table',
+    path: 'serve',
+  },
 ];
 
 function formatter(data, parentPath = '/', parentAuthority) {

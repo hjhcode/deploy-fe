@@ -58,6 +58,22 @@ export default class AdvancedProfile extends Component {
     this.setStepDirection();
     window.addEventListener('resize', this.setStepDirection);
   }
+  // componentDidMount() {
+  //   $.ajax({
+  //     url: `http://128.0.0.174:9001/authv1/construct/show`,
+  //     type: 'GET',
+  //     success: res => {
+  //       if (res.code === 0) {
+  //         this.setState({
+  //           data: res.data.datas,
+  //         });
+  //       }
+  //     },
+  //     error: () => {
+  //       message.error('请求失败！');
+  //     },
+  //   });
+  // }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.setStepDirection);
