@@ -2,7 +2,7 @@ import React from 'react';
 import $ from 'jquery';
 import moment from 'moment';
 import { stringify } from 'qs';
-import { Row, Col, Card, Table, Input, Modal, Button, Popconfirm, message, Divider } from 'antd';
+import { Button, Card, Col, Divider, Input, message, Modal, Popconfirm, Row, Table } from 'antd';
 import BasicForm from './BasicForm';
 
 const { Search } = Input;
@@ -17,7 +17,7 @@ const data = [];
 for (let i = 1; i <= 36; i++) {
   data.push({
     key: i,
-    project_name: '工程' + i,
+    project_name: `工程${i}`,
     project_describe: '这是工程描述',
     account_id: 'hahahha',
     create_date: moment()
@@ -64,8 +64,8 @@ class CusTableDemo extends React.Component {
       size: 10,
     };
     $.ajax({
-      // url:`http://128.0.0.174:9001/authv1/project/show?${stringify(params)}`,
-      url: `http://128.0.0.174:9001/authv1/project/show`,
+      // url:`http://192.168.1.102:9001/authv1/project/show?${stringify(params)}`,
+      url: `http://192.168.1.102:9001/authv1/project/show`,
       type: 'GET',
       success: res => {
         console.log(res);
@@ -104,7 +104,7 @@ class CusTableDemo extends React.Component {
 
   delProject(id) {
     $.ajax({
-      url: 'http://128.0.0.174:9001/authv1/project/del',
+      url: 'http://192.168.1.102:9001/authv1/project/del',
       type: 'POST',
       data: {
         project_id: id,
@@ -124,19 +124,23 @@ class CusTableDemo extends React.Component {
 
   buildProject(id) {
     $.ajax({
-      url: 'http://128.0.0.174:9001/authv1/project/construct',
+      url: 'http://192.168.1.102:9001/authv1/project/construct',
       type: 'POST',
       data: {
         project_id: id,
       },
-      success: function(res) {
+      success(res) {
         if (res.code === 0) {
-          message.success('构建成功！');
-          id = res.data;
-          window.location.href=`http://localhost:8000/#/detail/build/${id}`
+          if (res.msg === '') {
+            message.success('构建成功');
+            id = res.data;
+            window.location.href = `http://localhost:8000/#/detail/build/${id}`;
+          } else {
+            message.success('构建失败');
+          }
         }
       },
-      error: function() {
+      error() {
         message.error('构建失败！');
       },
     });
@@ -147,22 +151,21 @@ class CusTableDemo extends React.Component {
       name: value,
     };
     $.ajax({
-      url: `http://128.0.0.174:9001/authv1/project/search?${stringify(params)}`,
+      url: `http://192.168.1.102:9001/authv1/project/search?${stringify(params)}`,
       type: 'GET',
       success: function(res) {
         if (res.code === 0) {
-          message.success('chazhao成功！');
           this.setState({
             data: res.data.datas,
           });
         } else {
-          message.error('not found！');
+          message.error('工程不存在');
           this.setState({
             data: [],
           });
         }
       }.bind(this),
-      error: function() {
+      error() {
         message.error('请求发送失败！');
       },
     });

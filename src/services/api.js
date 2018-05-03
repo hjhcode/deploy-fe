@@ -1,6 +1,18 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
 
+const endpoint = 'http://192.168.1.102:9001';
+
+export async function queryDeployList() {
+  return request(`${endpoint}/authv1/deploy/show`);
+}
+
+export async function addDeploy() {
+  return request(`${endpoint}/auth/deploy/add`);
+}
+
+// -----------
+
 export async function queryProjectNotice() {
   return request('/api/project/notice');
 }

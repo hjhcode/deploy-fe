@@ -59,8 +59,8 @@ class CusTableDemo extends React.Component {
       size: 10,
     };
     $.ajax({
-      // url:`http://128.0.0.174:9001/authv1/project/show?${stringify(params)}`,
-      url:`http://128.0.0.174:9001/authv1/project/show`,
+      // url:`http://192.168.1.102:9001/authv1/project/show?${stringify(params)}`,
+      url:`http://192.168.1.102:9001/authv1/project/show`,
       type: 'GET',
       success: (res) => {
         console.log(res);
@@ -99,7 +99,7 @@ class CusTableDemo extends React.Component {
 
   delProject (id) {
     $.ajax({
-      url: 'http://128.0.0.174:9001/authv1/project/del',
+      url: 'http://192.168.1.102:9001/authv1/project/del',
       type: 'POST',
       data: {
         project_id: id,

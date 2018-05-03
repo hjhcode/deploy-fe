@@ -40,7 +40,7 @@ class StandardTable extends PureComponent {
 
   componentDidMount() {
     $.ajax({
-      url: `http://128.0.0.174:9001/authv1/construct/show`,
+      url: `http://192.168.1.102:9001/authv1/construct/show`,
       type: 'GET',
       success: res => {
         if (res.code === 0) {

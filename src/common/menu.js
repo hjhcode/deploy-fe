@@ -2,6 +2,31 @@ import { isUrl } from '../utils/utils';
 
 const menuData = [
   {
+    name: '工程',
+    icon: 'medicine-box',
+    path: 'project',
+  },
+  {
+    name: '服务',
+    icon: 'table',
+    path: 'service/list',
+  },
+  {
+    name: '服务创建',
+    icon: 'table',
+    path: 'service/create',
+  },
+  {
+    name: '构建',
+    icon: 'table',
+    path: 'build',
+  },
+  {
+    name: '部署',
+    icon: 'table',
+    path: 'deploy/list',
+  },
+  {
     name: 'dashboard',
     icon: 'dashboard',
     path: 'dashboard',
@@ -153,26 +178,6 @@ const menuData = [
         path: 'register-result',
       },
     ],
-  },
-  {
-    name: '工程',
-    icon: 'medicine-box',
-    path: 'project',
-  },
-  {
-    name: '构建',
-    icon: 'table',
-    path: 'build',
-  },
-  {
-    name: '部署',
-    icon: 'table',
-    path: 'deploy',
-  },
-  {
-    name: '服务',
-    icon: 'table',
-    path: 'serve',
   },
 ];
 

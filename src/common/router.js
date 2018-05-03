@@ -177,11 +177,17 @@ export const getRouterData = app => {
     '/detail/build/:id': {
       component: dynamicWrapper(app, [], () => import('../routes/BuildDetail')),
     },
-    '/deploy': {
-      component: dynamicWrapper(app, [], () => import('../routes/Deploy')),
+    '/deploy/list': {
+      component: dynamicWrapper(app, ['deploy'], () => import('../routes/Deploy/DeployList')),
     },
-    '/serve': {
-      component: dynamicWrapper(app, [], () => import('../routes/Serve')),
+    '/detail/deploy/:id': {
+      component: dynamicWrapper(app, [], () => import('../routes/DeployDetail')),
+    },
+    '/service/create': {
+      component: dynamicWrapper(app, [], () => import('../routes/ServiceForm/Form')),
+    },
+    '/service/list': {
+      component: dynamicWrapper(app, [], () => import('../routes/Service')),
     },
     // '/user/:id': {
     //   component: dynamicWrapper(app, [], () => import('../routes/User/SomeComponent')),
