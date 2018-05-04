@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Debounce from 'lodash-decorators/debounce';
 import Bind from 'lodash-decorators/bind';
 import {connect} from 'dva';
-import {Badge, Button, Card, Popover, Steps} from 'antd';
+import {Badge, Button, Card, Popover, message, Steps} from 'antd';
 import DescriptionList from 'components/DescriptionList';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './index.less';
