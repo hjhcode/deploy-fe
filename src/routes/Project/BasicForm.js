@@ -6,9 +6,6 @@ import error from '../../models/error';
 const FormItem = Form.Item;
 const { TextArea } = Input;
 
-let closeMask;
-let loadList;
-
 @Form.create()
 export default class BasicForms extends PureComponent {
   handleSubmit = e => {
@@ -50,7 +47,6 @@ export default class BasicForms extends PureComponent {
   updateProject(values) {
     values.project_id = this.props.project.id;
     // values.project_member =this.props.project_member;
-    console.log(project_member);
     $.ajax({
       url: 'http://192.168.1.102:9001/authv1/project/update',
       type: 'POST',
@@ -139,9 +135,7 @@ export default class BasicForms extends PureComponent {
         </FormItem>
         <FormItem {...formItemLayout} label="构建者">
           {getFieldDecorator('project_member', {
-            initialValue: project.project_member.includes(',')
-              ? project.project_member.split(',')
-              : '',
+            initialValue: project.project_member,
             // initialValue : type ==="add" ? project.account_id : project.project_member.split(","),
             rules: [
               {

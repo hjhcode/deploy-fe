@@ -14,7 +14,7 @@ const { Search } = Input;
 // }
 
 const data = [];
-for (let i = 1; i <= 36; i++) {
+for (let i = 1; i <= 36; i+=1) {
   data.push({
     key: i,
     project_name: `工程${i}`,
@@ -37,6 +37,7 @@ class CusTableDemo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
       bordered: false,
       size: 'default',
       titleName: '添加工程',
@@ -59,10 +60,6 @@ class CusTableDemo extends React.Component {
   }
 
   loadProjectList() {
-    const params = {
-      page: 1,
-      size: 10,
-    };
     $.ajax({
       // url:`http://192.168.1.102:9001/authv1/project/show?${stringify(params)}`,
       url: `http://192.168.1.102:9001/authv1/project/show`,
@@ -75,7 +72,7 @@ class CusTableDemo extends React.Component {
           });
         }
       },
-      error: error => {
+      error: () => {
         message.error('请求失败！');
       },
     });
@@ -123,6 +120,9 @@ class CusTableDemo extends React.Component {
   }
 
   buildProject(id) {
+    this.setState({
+      loading: true,
+    });
     $.ajax({
       url: 'http://192.168.1.102:9001/authv1/project/construct',
       type: 'POST',
@@ -133,8 +133,10 @@ class CusTableDemo extends React.Component {
         if (res.code === 0) {
           if (res.msg === '') {
             message.success('构建成功');
-            id = res.data;
-            window.location.href = `http://localhost:8000/#/detail/build/${id}`;
+            this.setState({
+              loading: false,
+            });
+            window.location.href = `http://localhost:8000/#/detail/build/${res.data}`;
           } else {
             message.success('构建失败');
           }
@@ -250,7 +252,7 @@ class CusTableDemo extends React.Component {
       },
     ];
 
-    const { visible, titleName, project, type } = this.state;
+    const { visible, titleName, project, type, loading } = this.state;
     return (
       <div>
         <Card hoverable>
@@ -271,7 +273,7 @@ class CusTableDemo extends React.Component {
               </Col>
             </Row>
           </div>
-          <Table {...this.state} columns={columns} dataSource={this.state.data} />
+          <Table {...this.state} columns={columns} dataSource={this.state.data} loading={loading} />
         </Card>
         <Modal
           title={titleName}
