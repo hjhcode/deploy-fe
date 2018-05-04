@@ -184,10 +184,22 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, [], () => import('../routes/DeployDetail')),
     },
     '/service/create': {
-      component: dynamicWrapper(app, [], () => import('../routes/ServiceForm/Form')),
+      component: dynamicWrapper(app, [], () => import('../routes/Service/Form')),
+    },
+    '/service/create/info': {
+      name: '分步表单（填写转账信息）',
+      component: dynamicWrapper(app, [], () => import('../routes/Service/Form/Step1')),
+    },
+    '/service/create/config': {
+      name: '分步表单（确认转账信息）',
+      component: dynamicWrapper(app, [], () => import('../routes/Service/Form/Step2')),
+    },
+    '/service/create/host': {
+      name: '分步表单（完成）',
+      component: dynamicWrapper(app, [], () => import('../routes/Service/Form/Step3')),
     },
     '/service/list': {
-      component: dynamicWrapper(app, [], () => import('../routes/Service')),
+      component: dynamicWrapper(app, ['service'], () => import('../routes/Service/ServiceList')),
     },
     // '/user/:id': {
     //   component: dynamicWrapper(app, [], () => import('../routes/User/SomeComponent')),

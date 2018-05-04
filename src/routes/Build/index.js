@@ -1,8 +1,7 @@
-import React, { PureComponent } from 'react';
-import { stringify } from 'qs';
+import React, {PureComponent} from 'react';
 import $ from 'jquery';
-import { Link } from 'dva/router';
-import { Table, Badge, Card, message } from 'antd';
+import {Link} from 'dva/router';
+import {Badge, Card, message, Table} from 'antd';
 import moment from 'moment/moment';
 import styles from './index.less';
 
@@ -33,7 +32,7 @@ class StandardTable extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
+      loading: true,
       data: [],
     };
   }
@@ -45,6 +44,7 @@ class StandardTable extends PureComponent {
       success: res => {
         if (res.code === 0) {
           this.setState({
+            loading: false,
             data: res.data.datas,
           });
         }
@@ -63,9 +63,19 @@ class StandardTable extends PureComponent {
         dataIndex: 'id',
       },
       {
-        key: 'account_id',
+        key: 'project_name',
+        title: '工程名',
+        dataIndex: 'project_name',
+      },
+      {
+        key: 'mirror_name',
+        title: '镜像名',
+        dataIndex: 'mirror_name',
+      },
+      {
+        key: 'account_name',
         title: '构建者',
-        dataIndex: 'account_id',
+        dataIndex: 'account_name',
       },
       {
         key: 'constructor_start',
@@ -95,7 +105,7 @@ class StandardTable extends PureComponent {
       },
     ];
 
-    const { loading } = this.state;
+    const {loading} = this.state;
 
     return (
       <Card border="false">

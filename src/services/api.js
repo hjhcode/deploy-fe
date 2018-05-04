@@ -8,8 +8,18 @@ export async function queryDeployList() {
 }
 
 export async function addDeploy() {
-  return request(`${endpoint}/auth/deploy/add`);
+  return request(`${endpoint}/authv1/deploy/add`);
 }
+
+export async function queryServiceList() {
+  return request(`${endpoint}/authv1/service/show`);
+}
+
+export async function addService() {
+  return request(`${endpoint}/authv1/service/add`);
+}
+
+
 
 // -----------
 
