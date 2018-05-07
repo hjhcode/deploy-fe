@@ -187,15 +187,15 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, [], () => import('../routes/Service/Form')),
     },
     '/service/create/info': {
-      name: '分步表单（填写转账信息）',
+      name: '基本信息',
       component: dynamicWrapper(app, [], () => import('../routes/Service/Form/Step1')),
     },
     '/service/create/config': {
-      name: '分步表单（确认转账信息）',
+      name: '配置信息',
       component: dynamicWrapper(app, [], () => import('../routes/Service/Form/Step2')),
     },
     '/service/create/host': {
-      name: '分步表单（完成）',
+      name: '结果',
       component: dynamicWrapper(app, [], () => import('../routes/Service/Form/Step3')),
     },
     '/service/list': {

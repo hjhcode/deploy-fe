@@ -34,6 +34,18 @@ class Step1 extends React.PureComponent {
     return (
       <Fragment>
         <Form layout="horizontal" className={styles.stepForm} hideRequiredMark>
+          <Form.Item {...formItemLayout} label="服务名称">
+            {getFieldDecorator('serviceName', {
+              initialValue: data.receiverName,
+              rules: [{ required: true, message: '请输入服务名' }],
+            })(<Input placeholder="请输入服务名" />)}
+          </Form.Item>
+          <Form.Item {...formItemLayout} label="服务描述">
+            {getFieldDecorator('receiverName', {
+              initialValue: data.receiverName,
+              rules: [{ required: true, message: '请输入服务描述' }],
+            })(<Input placeholder="请输入服务描述" />)}
+          </Form.Item>
           <Form.Item {...formItemLayout} label="付款账户">
             {getFieldDecorator('payAccount', {
               initialValue: data.payAccount,
@@ -44,26 +56,19 @@ class Step1 extends React.PureComponent {
               </Select>
             )}
           </Form.Item>
-          <Form.Item {...formItemLayout} label="收款账户">
+          <Form.Item {...formItemLayout} label="镜像">
             <Input.Group compact>
               <Select defaultValue="alipay" style={{ width: 100 }}>
-                <Option value="alipay">支付宝</Option>
-                <Option value="bank">银行账户</Option>
+                <Option value="alipay">基本镜像</Option>
+                <Option value="bank">工程镜像</Option>
               </Select>
               {getFieldDecorator('receiverAccount', {
                 initialValue: data.receiverAccount,
                 rules: [
-                  { required: true, message: '请输入收款人账户' },
-                  { type: 'email', message: '账户名应为邮箱格式' },
+                  { required: true, message: '请输入镜像' },
                 ],
-              })(<Input style={{ width: 'calc(100% - 100px)' }} placeholder="test@example.com" />)}
+              })(<Input style={{ width: 'calc(100% - 100px)' }} placeholder="image:tag" />)}
             </Input.Group>
-          </Form.Item>
-          <Form.Item {...formItemLayout} label="收款人姓名">
-            {getFieldDecorator('receiverName', {
-              initialValue: data.receiverName,
-              rules: [{ required: true, message: '请输入收款人姓名' }],
-            })(<Input placeholder="请输入收款人姓名" />)}
           </Form.Item>
           <Form.Item {...formItemLayout} label="转账金额">
             {getFieldDecorator('amount', {
