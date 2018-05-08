@@ -41,27 +41,23 @@ export default class AdvancedProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
-      data: [],
+      data: {},
       stepDirection: 'horizontal',
+      step: 0,
     };
 
     this.startBuild = this.startBuild.bind(this);
   }
 
   componentDidMount() {
-    const {location} = this.props;
-    const {pathname} = location;
-    const pathList = pathname.split('/');
-    const id = pathList[pathList.length - 1];
-    const url = `http://192.168.43.98:9001/authv1/construct/detail?id=${ id}`;
+    const { id } = this.props.match.params;
+    const url = `http://128.0.0.174:9001/authv1/construct/detail?id=${id}`;
     $.ajax({
       url,
       type: 'GET',
       success: res => {
         if (res.code === 0) {
           this.setState({
-            loading: false,
             data: res.data,
             step: 0,
           });
@@ -77,7 +73,7 @@ export default class AdvancedProfile extends Component {
 
   // componentDidMount() {
   //   $.ajax({
-  //     url: `http://192.168.43.98:9001/authv1/construct/show`,
+  //     url: `http://128.0.0.174:9001/authv1/construct/show`,
   //     type: 'GET',
   //     success: res => {
   //       if (res.code === 0) {
@@ -115,6 +111,44 @@ export default class AdvancedProfile extends Component {
 
   startBuild() {
     this.setState({step: 1});
+    const { id } = this.props.match.params;
+    const url = `http://128.0.0.174:9001/authv1/construct/start`;
+    $.ajax({
+      url,
+      type: 'POST',
+      data: {construct_id: id},
+      success: res => {
+        if (res.code === 0) {
+          const timer = setInterval( () => {
+            $.ajax({
+              url: `http://128.0.0.174:9001/authv1/construct/detail?id=${id}`,
+              type: 'GET',
+              success: resp => {
+                if (resp.code === 0) {
+                  // resp.data.construct_log = 'hdjfhdsjfgfcgvsd';
+                  this.setState({
+                    data: resp.data,
+                  });
+
+                  if (resp.data.construct_statu >= 2 ) {
+                    this.setState({
+                      step: 2,
+                    });
+                    clearInterval(timer);
+                  }
+                }
+              },
+              error: () => {
+                message.error('请求失败！');
+              },
+            });
+          }, 500);
+        }
+      },
+      error: () => {
+        message.error('请求失败！');
+      },
+    });
   }
 
   renderButton(num) {
@@ -131,13 +165,12 @@ export default class AdvancedProfile extends Component {
         </Button>
       );
     } else {
-      return '';
+      return <Button disabled >结束</Button>;
     }
   }
 
   render() {
     const {stepDirection, step, data} = this.state;
-    console.log(data);
     return (
       <PageHeaderLayout
         title={data.project_name}
@@ -158,18 +191,18 @@ export default class AdvancedProfile extends Component {
             <Steps
               direction={stepDirection}
               progressDot={customDot}
-              current={step}
+              current={step >= 2 ? 2 : step}
               style={{width: '88%'}}
             >
               <Step title="未构建" />
               <Step title="构建中" />
-              <Step title="完成" />
+              <Step title={data.construct_statu <= 2 ? '完成' : '失败'} />
             </Steps>
             <div style={{width: '10%'}}>{this.renderButton(step)}</div>
           </div>
         </Card>
         <Card title="日志信息" style={{marginBottom: 24}} bordered={false}>
-          <div className={styles.noData} />
+          <div className={styles.noData} dangerouslySetInnerHTML={{__html: data.construct_log}} style={{color: '#000'}}/>
         </Card>
       </PageHeaderLayout>
     );

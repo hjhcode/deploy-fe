@@ -1,11 +1,11 @@
 import React, {Fragment, PureComponent} from 'react';
 import moment from 'moment';
 import {connect} from 'dva';
-import {Badge, Card, Button, Divider, Input, Table} from 'antd';
+import $ from 'jquery';
+import {Badge, Card, Button, Divider, Input, Table, message} from 'antd';
 import {Link, routerRedux} from 'dva/router';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './ServiceList.less';
-
 const {Search} = Input;
 const status = ['停止', '运行中', '成功', '失败'];
 const statusMap = ['error', 'processing', 'succeed'];
@@ -15,13 +15,19 @@ const statusMap = ['error', 'processing', 'succeed'];
   loading: loading.models.service,
 }))
 export default class DeployList extends PureComponent {
+
+  constructor(props) {
+    super(props);
+
+    this.addService = this.addService.bind(this);
+    this.delService = this.delService.bind(this);
+    this.deployService = this.deployService.bind(this);
+  }
+
   componentDidMount() {
     this.props.dispatch({
       type: 'service/fetch',
     });
-
-    this.addService = this.addService.bind(this);
-    this.delService = this.delService.bind(this);
   }
 
   addService() {
@@ -34,8 +40,39 @@ export default class DeployList extends PureComponent {
 
   }
 
+  deployService(id) {
+    // this.setState({
+    //   loading: true,
+    // });
+    $.ajax({
+      url: 'http://128.0.0.174:9001/authv1/service/deploy',
+      type: 'POST',
+      data: {
+        service_id: id,
+      },
+      success: (res) => {
+        // this.setState({
+        //   loading: false,
+        // });
+        if (res.code === 0) {
+          message.success('部署任务创建成功');
+          window.location.href = `/#/detail/deploy/${res.data}`;
+        } else {
+          message.success('构建失败: ' + res.msg);
+        }
+      },
+      error: () => {
+        // this.setState({
+        //   loading: false,
+        // });
+        message.error('构建失败！');
+      },
+    });
+  }
+
   render() {
     const {service: {list}, loading} = this.props;
+
 
     const extraContent = (
       <div className={styles.extraContent}>
@@ -122,7 +159,7 @@ export default class DeployList extends PureComponent {
           <Fragment>
             <Link to={`/service/update/${record.id}`}>修改</Link>
             <Divider type="vertical" />
-            <Link to={`/detail/deploy/${record.id}`}>部署</Link>
+            <span onClick={() => this.deployService(record.id)} style={{cursor: 'pointer'}}>部署</span>
             <Divider type="vertical" />
             <Link to={`/detail/deploy/${record.id}`}>删除</Link>
           </Fragment>

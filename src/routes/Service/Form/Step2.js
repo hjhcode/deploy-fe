@@ -47,7 +47,7 @@ class Step2 extends React.PureComponent {
             service_member: data.service_member,
           };
           $.ajax({
-            url: `http://192.168.43.98:9001/authv1/service/add`,
+            url: `http://128.0.0.174:9001/authv1/service/add`,
             type: 'POST',
             data: reqdata,
             success: res => {

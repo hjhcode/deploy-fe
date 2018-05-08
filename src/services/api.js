@@ -1,7 +1,7 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
 
-const endpoint = 'http://192.168.43.98:9001';
+const endpoint = 'http://128.0.0.174:9001';
 
 export async function queryDeployList() {
   return request(`${endpoint}/authv1/deploy/show`);

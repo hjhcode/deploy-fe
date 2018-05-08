@@ -63,8 +63,8 @@ class CusTableDemo extends React.Component {
 
   loadProjectList() {
     $.ajax({
-      // url:`http://192.168.1.102:9001/authv1/project/show?${stringify(params)}`,
-      url: `http://192.168.1.102:9001/authv1/project/show`,
+      // url:`http://128.0.0.174:9001/authv1/project/show?${stringify(params)}`,
+      url: `http://128.0.0.174:9001/authv1/project/show`,
       type: 'GET',
       success: res => {
         console.log(res);
@@ -104,7 +104,7 @@ class CusTableDemo extends React.Component {
 
   delProject(id) {
     $.ajax({
-      url: 'http://192.168.1.102:9001/authv1/project/del',
+      url: 'http://128.0.0.174:9001/authv1/project/del',
       type: 'POST',
       data: {
         project_id: id,
@@ -127,7 +127,7 @@ class CusTableDemo extends React.Component {
       loading: true,
     });
     $.ajax({
-      url: 'http://192.168.1.102:9001/authv1/project/construct',
+      url: 'http://128.0.0.174:9001/authv1/project/construct',
       type: 'POST',
       data: {
         project_id: id,
@@ -157,7 +157,7 @@ class CusTableDemo extends React.Component {
       name: value,
     };
     $.ajax({
-      url: `http://192.168.1.102:9001/authv1/project/search?${stringify(params)}`,
+      url: `http://128.0.0.174:9001/authv1/project/search?${stringify(params)}`,
       type: 'GET',
       success: function (res) {
         if (res.code === 0) {

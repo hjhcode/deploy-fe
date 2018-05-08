@@ -25,7 +25,7 @@ export default class BasicForms extends PureComponent {
 
   addProject(values) {
     $.ajax({
-      url: 'http://192.168.1.102:9001/authv1/project/add',
+      url: 'http://128.0.0.174:9001/authv1/project/add',
       type: 'POST',
       data: values,
       success: res => {
@@ -50,7 +50,7 @@ export default class BasicForms extends PureComponent {
     values.project_id = this.props.project.id;
     // values.project_member =this.props.project_member;
     $.ajax({
-      url: 'http://192.168.1.102:9001/authv1/project/update',
+      url: 'http://128.0.0.174:9001/authv1/project/update',
       type: 'POST',
       data: values,
       success: (res) => {

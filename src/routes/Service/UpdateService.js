@@ -32,7 +32,7 @@ export default class UpdateService extends React.PureComponent {
 
   componentDidMount() {
     $.ajax({
-      url: `http://192.168.43.98:9001/authv1/mirror/show`,
+      url: `http://128.0.0.174:9001/authv1/mirror/show`,
       type: 'GET',
       success: res => {
         if (res.code === 0) {
@@ -41,7 +41,7 @@ export default class UpdateService extends React.PureComponent {
           });
 
           $.ajax({
-            url: `http://192.168.43.98:9001/authv1/host/show`,
+            url: `http://128.0.0.174:9001/authv1/host/show`,
             type: 'GET',
             success: response => {
               if (response.code === 0) {
@@ -50,7 +50,7 @@ export default class UpdateService extends React.PureComponent {
                 });
 
                 $.ajax({
-                  url: `http://192.168.43.98:9001/authv1/service/detail?id=${this.props.match.params.id}`,
+                  url: `http://128.0.0.174:9001/authv1/service/detail?id=${this.props.match.params.id}`,
                   type: 'GET',
                   success: resp => {
                     if (resp.code === 0) {
@@ -185,7 +185,7 @@ export default class UpdateService extends React.PureComponent {
             service_member: values.service_member,
           };
           $.ajax({
-            url: `http://192.168.43.98:9001/authv1/service/update`,
+            url: `http://128.0.0.174:9001/authv1/service/update`,
             type: 'POST',
             data: reqdata,
             success: resp => {

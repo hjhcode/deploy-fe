@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
+import $ from 'jquery';
 import { Button, Collapse, Table, Modal } from 'antd';
 import DescriptionList from 'components/DescriptionList';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -8,13 +9,15 @@ import styles from './index.less';
 const { Description } = DescriptionList;
 const { Panel } = Collapse;
 
+const statusArr = ['待部署', '部署中', '部署失', '跳过部署', '部署完成'];
+
 const data = [];
 for (let i = 0; i < 5; i++) {
   data.push({
     key: i,
     id: i,
     name: 'hhhh',
-    time: '2018-02-09 23:22:34',
+    machine_status: 0,
     operation: {
       id: i,
       status: 0,
@@ -22,20 +25,6 @@ for (let i = 0; i < 5; i++) {
     },
   });
 }
-
-
-const description = (
-  <DescriptionList className={styles.headerList} size="small" col="2">
-    <Description term="创建人">曲丽丽</Description>
-    <Description term="订购产品">XX 服务</Description>
-    <Description term="创建时间">2017-07-07</Description>
-    <Description term="关联单据">
-      <a href="">12421</a>
-    </Description>
-    <Description term="生效日期">2017-07-07 ~ 2017-08-08</Description>
-    <Description term="备注">请于两个工作日内确认</Description>
-  </DescriptionList>
-);
 
 @connect(({ profile }) => ({
   profile,
@@ -46,6 +35,7 @@ export default class AdvancedProfile extends Component {
     super(props);
     this.state = {
       visible: false,
+      data: {},
     };
 
     this.handleCancel = this.handleCancel.bind(this);
@@ -53,6 +43,20 @@ export default class AdvancedProfile extends Component {
   }
 
   componentDidMount() {
+    $.ajax({
+      url: `http://128.0.0.174:9001/authv1/deploy/detail?id=${this.props.match.params.id}`,
+      type: 'GET',
+      success: res => {
+        if (res.code === 0) {
+          this.setState({
+            data: res.data,
+          });
+        }
+      },
+      error: () => {
+        message.error('请求失败！');
+      },
+    });
     window.addEventListener('resize', this.setStepDirection);
   }
 
@@ -82,6 +86,8 @@ export default class AdvancedProfile extends Component {
 
   render() {
 
+    // const { data } = this.state;
+
     const columns = [
       {
         key: 'id',
@@ -94,9 +100,12 @@ export default class AdvancedProfile extends Component {
         dataIndex: 'name',
       },
       {
-        key: 'endUpdateTime',
-        title: '最后更新时间',
-        dataIndex: 'time',
+        key: 'status',
+        title: '部署状态',
+        dataIndex: 'machine_status',
+        render(val){
+          return <span>{statusArr[val]}</span>
+        },
       },
       {
         key: 'operation',
@@ -105,11 +114,20 @@ export default class AdvancedProfile extends Component {
         render: (val, record) => {
           return (<span>
             <Button type="primary" onClick={() => {console.log(val)}} style={{marginRight:10}}>跳过</Button>
-            <Button type="default" onClick={() => {this.showLog(record.operation.log)}}>详情</Button>
           </span>);
         },
       }
     ];
+
+    // const description = (
+    //   <DescriptionList className={styles.headerList} size="small" col="2">
+    //     <Description term="服务名">{data.service_name}</Description>
+    //     <Description term="创建者">{data.account_name}</Description>
+    //     <Description term="创建时间">{data.create_date}</Description>
+    //     <Description term="更新日期">{data.update_date}</Description>
+    //     <Description term="描述">{data.service_describe}</Description>
+    //   </DescriptionList>
+    // );
 
 
     return (
@@ -118,7 +136,7 @@ export default class AdvancedProfile extends Component {
         logo={
           <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png" />
         }
-        content={description}
+        // content={description}
       >
         <div style={{marginBottom: 20, float: 'right'}}>
           <Button type="primary"  style={{marginRight: 20}}>结束</Button>
