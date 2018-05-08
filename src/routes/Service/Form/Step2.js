@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Form, Input, Button, Alert, Divider } from 'antd';
+import { Form, Input, Button, Select, message } from 'antd';
 import { routerRedux } from 'dva/router';
 import { digitUppercase } from '../../../utils/utils';
 import styles from './style.less';
+import $ from 'jquery';
 
 const formItemLayout = {
   labelCol: {
@@ -26,11 +27,38 @@ class Step2 extends React.PureComponent {
       e.preventDefault();
       validateFields((err, values) => {
         if (!err) {
-          dispatch({
-            type: 'form/submitStepForm',
-            payload: {
-              ...data,
-              ...values,
+          const docker = {
+            workdir: values.workdir,
+            hostname: values.hostname,
+            hostlist: values.hostlist,
+            dns: values.dns,
+            env: values.env,
+            cmd: values.cmd,
+            volume: values.volume,
+            expose: values.expose,
+          };
+
+          const reqdata = {
+            service_name: data.service_name,
+            service_describe: data.service_describe,
+            host_list: JSON.stringify(data.host_list),
+            mirror_list: data.mirror_list,
+            docker_config: JSON.stringify(docker),
+            service_member: data.service_member,
+          };
+          $.ajax({
+            url: `http://192.168.43.98:9001/authv1/service/add`,
+            type: 'POST',
+            data: reqdata,
+            success: res => {
+              if (res.code === 0) {
+                dispatch(routerRedux.push('/service/create/host'));
+              } else {
+                message.error('提交失败！');
+              }
+            },
+            error: () => {
+              message.error('请求失败！');
             },
           });
         }
@@ -38,36 +66,76 @@ class Step2 extends React.PureComponent {
     };
     return (
       <Form layout="horizontal" className={styles.stepForm}>
-        <Alert
-          closable
-          showIcon
-          message="确认转账后，资金将直接打入对方账户，无法退回。"
-          style={{ marginBottom: 24 }}
-        />
-        <Form.Item {...formItemLayout} className={styles.stepFormText} label="付款账户">
-          {data.payAccount}
+        <Form.Item {...formItemLayout} label="workdir">
+          {getFieldDecorator('workdir', {
+            rules: [{ required: true,message: '请输入workdir' }],
+          })(
+            <Input placeholder="请输入workdir" />
+          )}
         </Form.Item>
-        <Form.Item {...formItemLayout} className={styles.stepFormText} label="收款账户">
-          {data.receiverAccount}
+        <Form.Item {...formItemLayout} label="hostname">
+          {getFieldDecorator('hostname', {
+            rules: [{ required: true,message: '请输入hostname' }],
+          })(
+            <Input placeholder="请输入hostname" />
+          )}
         </Form.Item>
-        <Form.Item {...formItemLayout} className={styles.stepFormText} label="收款人姓名">
-          {data.receiverName}
-        </Form.Item>
-        <Form.Item {...formItemLayout} className={styles.stepFormText} label="转账金额">
-          <span className={styles.money}>{data.amount}</span>
-          <span className={styles.uppercase}>（{digitUppercase(data.amount)}）</span>
-        </Form.Item>
-        <Divider style={{ margin: '24px 0' }} />
-        <Form.Item {...formItemLayout} label="支付密码" required={false}>
-          {getFieldDecorator('password', {
-            initialValue: '123456',
+        <Form.Item {...formItemLayout} label="hostlist">
+          {getFieldDecorator('hostlist', {
             rules: [
               {
                 required: true,
-                message: '需要支付密码才能进行支付',
+                message: '请输入hostlist',
               },
             ],
-          })(<Input type="password" autoComplete="off" style={{ width: '80%' }} />)}
+          })(<Select mode="tags" placeholder="输入hostlist" style={{width: '100%'}} />)}
+        </Form.Item>
+        <Form.Item {...formItemLayout} label="env">
+          {getFieldDecorator('env', {
+            rules: [
+              {
+                required: true,
+                message: '请输入env',
+              },
+            ],
+          })(<Select mode="tags" placeholder="输入env" style={{width: '100%'}} />)}
+        </Form.Item>
+        <Form.Item {...formItemLayout} label="dns">
+          {getFieldDecorator('dns', {
+            rules: [
+              {
+                required: true,
+                message: '请输入dns',
+              },
+            ],
+          })(<Select mode="tags" placeholder="输入dns" style={{width: '100%'}} />)}
+        </Form.Item>
+        <Form.Item {...formItemLayout} label="cmd">
+          {getFieldDecorator('cmd', {
+            rules: [{ required: true,message: '请输入cmd' }],
+          })(
+            <Input placeholder="请输入cmd" />
+          )}
+        </Form.Item>
+        <Form.Item {...formItemLayout} label="volume">
+          {getFieldDecorator('volume', {
+            rules: [
+              {
+                required: true,
+                message: '请输入volume',
+              },
+            ],
+          })(<Select mode="tags" placeholder="输入volume" style={{width: '100%'}} />)}
+        </Form.Item>
+        <Form.Item {...formItemLayout} label="expose">
+          {getFieldDecorator('expose', {
+            rules: [
+              {
+                required: true,
+                message: '请输入expose',
+              },
+            ],
+          })(<Select mode="tags" placeholder="输入expose" style={{width: '100%'}} />)}
         </Form.Item>
         <Form.Item
           style={{ marginBottom: 8 }}

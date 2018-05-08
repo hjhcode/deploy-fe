@@ -120,7 +120,7 @@ export default class DeployList extends PureComponent {
         title: '操作',
         render: (text, record) => (
           <Fragment>
-            <Link to={`/detail/deploy/${record.id}`}>修改</Link>
+            <Link to={`/service/update/${record.id}`}>修改</Link>
             <Divider type="vertical" />
             <Link to={`/detail/deploy/${record.id}`}>部署</Link>
             <Divider type="vertical" />
