@@ -12,11 +12,6 @@ const menuData = [
     path: 'service/list',
   },
   {
-    name: '服务创建',
-    icon: 'table',
-    path: 'service/create',
-  },
-  {
     name: '构建',
     icon: 'table',
     path: 'build',

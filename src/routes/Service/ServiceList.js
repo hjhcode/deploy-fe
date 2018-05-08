@@ -58,7 +58,7 @@ export default class DeployList extends PureComponent {
           message.success('部署任务创建成功');
           window.location.href = `/#/detail/deploy/${res.data}`;
         } else {
-          message.success('构建失败: ' + res.msg);
+          message.error('构建失败: ' + res.msg);
         }
       },
       error: () => {
@@ -109,7 +109,8 @@ export default class DeployList extends PureComponent {
         title: '服务名',
         dataIndex: 'service_name',
         render: (text, record) => {
-          return <a href={`/auth/service/${record.service_id}`}>{text}</a>;
+          // return <a href={`/auth/service/${record.service_id}`}>{text}</a>;
+          return <span>{text}</span>;
         },
       },
       {
@@ -159,7 +160,7 @@ export default class DeployList extends PureComponent {
           <Fragment>
             <Link to={`/service/update/${record.id}`}>修改</Link>
             <Divider type="vertical" />
-            <span onClick={() => this.deployService(record.id)} style={{cursor: 'pointer'}}>部署</span>
+            <a onClick={() => this.deployService(record.id)} style={{cursor: 'pointer'}}>部署</a>
             <Divider type="vertical" />
             <Link to={`/detail/deploy/${record.id}`}>删除</Link>
           </Fragment>

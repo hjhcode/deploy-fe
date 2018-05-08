@@ -62,7 +62,7 @@ export default class DeployList extends PureComponent {
         title: '服务名',
         dataIndex: 'service_name',
         render: (text, record) => {
-          return <a href={`/auth/service/${record.service_id}`}>{text}</a>;
+          return <span>{text}</span>;
         },
       },
       {
