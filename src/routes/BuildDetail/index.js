@@ -51,7 +51,7 @@ export default class AdvancedProfile extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    const url = `http://128.0.0.174:9001/authv1/construct/detail?id=${id}`;
+    const url = `http://192.168.43.98:9001/authv1/construct/detail?id=${id}`;
     $.ajax({
       url,
       type: 'GET',
@@ -73,7 +73,7 @@ export default class AdvancedProfile extends Component {
 
   // componentDidMount() {
   //   $.ajax({
-  //     url: `http://128.0.0.174:9001/authv1/construct/show`,
+  //     url: `http://192.168.43.98:9001/authv1/construct/show`,
   //     type: 'GET',
   //     success: res => {
   //       if (res.code === 0) {
@@ -112,7 +112,7 @@ export default class AdvancedProfile extends Component {
   startBuild() {
     this.setState({step: 1});
     const { id } = this.props.match.params;
-    const url = `http://128.0.0.174:9001/authv1/construct/start`;
+    const url = `http://192.168.43.98:9001/authv1/construct/start`;
     $.ajax({
       url,
       type: 'POST',
@@ -121,7 +121,7 @@ export default class AdvancedProfile extends Component {
         if (res.code === 0) {
           const timer = setInterval( () => {
             $.ajax({
-              url: `http://128.0.0.174:9001/authv1/construct/detail?id=${id}`,
+              url: `http://192.168.43.98:9001/authv1/construct/detail?id=${id}`,
               type: 'GET',
               success: resp => {
                 if (resp.code === 0) {

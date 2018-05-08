@@ -47,7 +47,7 @@ class Step2 extends React.PureComponent {
             service_member: data.service_member,
           };
           $.ajax({
-            url: `http://128.0.0.174:9001/authv1/service/add`,
+            url: `http://192.168.43.98:9001/authv1/service/add`,
             type: 'POST',
             data: reqdata,
             success: res => {
@@ -68,73 +68,73 @@ class Step2 extends React.PureComponent {
       <Form layout="horizontal" className={styles.stepForm}>
         <Form.Item {...formItemLayout} label="workdir">
           {getFieldDecorator('workdir', {
-            rules: [{ required: true,message: '请输入workdir' }],
+            // rules: [{ required: true,message: '请输入workdir' }],
           })(
             <Input placeholder="请输入workdir" />
           )}
         </Form.Item>
         <Form.Item {...formItemLayout} label="hostname">
           {getFieldDecorator('hostname', {
-            rules: [{ required: true,message: '请输入hostname' }],
+            // rules: [{ required: true,message: '请输入hostname' }],
           })(
             <Input placeholder="请输入hostname" />
           )}
         </Form.Item>
         <Form.Item {...formItemLayout} label="hostlist">
           {getFieldDecorator('hostlist', {
-            rules: [
-              {
-                required: true,
-                message: '请输入hostlist',
-              },
-            ],
+            // rules: [
+            //   {
+            //     required: true,
+            //     message: '请输入hostlist',
+            //   },
+            // ],
           })(<Select mode="tags" placeholder="输入hostlist" style={{width: '100%'}} />)}
         </Form.Item>
         <Form.Item {...formItemLayout} label="env">
           {getFieldDecorator('env', {
-            rules: [
-              {
-                required: true,
-                message: '请输入env',
-              },
-            ],
+            // rules: [
+            //   {
+            //     required: true,
+            //     message: '请输入env',
+            //   },
+            // ],
           })(<Select mode="tags" placeholder="输入env" style={{width: '100%'}} />)}
         </Form.Item>
         <Form.Item {...formItemLayout} label="dns">
           {getFieldDecorator('dns', {
-            rules: [
-              {
-                required: true,
-                message: '请输入dns',
-              },
-            ],
+            // rules: [
+            //   {
+            //     required: true,
+            //     message: '请输入dns',
+            //   },
+            // ],
           })(<Select mode="tags" placeholder="输入dns" style={{width: '100%'}} />)}
         </Form.Item>
         <Form.Item {...formItemLayout} label="cmd">
           {getFieldDecorator('cmd', {
-            rules: [{ required: true,message: '请输入cmd' }],
+            // rules: [{ required: true,message: '请输入cmd' }],
           })(
             <Input placeholder="请输入cmd" />
           )}
         </Form.Item>
         <Form.Item {...formItemLayout} label="volume">
           {getFieldDecorator('volume', {
-            rules: [
-              {
-                required: true,
-                message: '请输入volume',
-              },
-            ],
+            // rules: [
+            //   {
+            //     required: true,
+            //     message: '请输入volume',
+            //   },
+            // ],
           })(<Select mode="tags" placeholder="输入volume" style={{width: '100%'}} />)}
         </Form.Item>
         <Form.Item {...formItemLayout} label="expose">
           {getFieldDecorator('expose', {
-            rules: [
-              {
-                required: true,
-                message: '请输入expose',
-              },
-            ],
+            // rules: [
+            //   {
+            //     required: true,
+            //     message: '请输入expose',
+            //   },
+            // ],
           })(<Select mode="tags" placeholder="输入expose" style={{width: '100%'}} />)}
         </Form.Item>
         <Form.Item

@@ -62,7 +62,7 @@ class Step1 extends React.PureComponent {
 
   componentDidMount() {
     $.ajax({
-      url: `http://128.0.0.174:9001/authv1/mirror/show`,
+      url: `http://192.168.43.98:9001/authv1/mirror/show`,
       type: 'GET',
       success: res => {
         if (res.code === 0) {
@@ -71,7 +71,7 @@ class Step1 extends React.PureComponent {
           });
 
           $.ajax({
-            url: `http://128.0.0.174:9001/authv1/host/show`,
+            url: `http://192.168.43.98:9001/authv1/host/show`,
             type: 'GET',
             success: response => {
               if (response.code === 0) {

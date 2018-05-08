@@ -2,10 +2,11 @@ import React, {Fragment, PureComponent} from 'react';
 import moment from 'moment';
 import {connect} from 'dva';
 import $ from 'jquery';
-import {Badge, Card, Button, Divider, Input, Table, message} from 'antd';
+import {Badge, Button, Card, Divider, Spin, Input, message, Table} from 'antd';
 import {Link, routerRedux} from 'dva/router';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './ServiceList.less';
+
 const {Search} = Input;
 const status = ['停止', '运行中', '成功', '失败'];
 const statusMap = ['error', 'processing', 'succeed'];
@@ -18,7 +19,9 @@ export default class DeployList extends PureComponent {
 
   constructor(props) {
     super(props);
-
+    this.state = {
+      loading: false,
+    };
     this.addService = this.addService.bind(this);
     this.delService = this.delService.bind(this);
     this.deployService = this.deployService.bind(this);
@@ -41,32 +44,32 @@ export default class DeployList extends PureComponent {
   }
 
   deployService(id) {
-    // this.setState({
-    //   loading: true,
-    // });
+    this.setState({
+      loading: true,
+    });
     $.ajax({
-      url: 'http://128.0.0.174:9001/authv1/service/deploy',
+      url: 'http://192.168.43.98:9001/authv1/service/deploy',
       type: 'POST',
       data: {
         service_id: id,
       },
-      success: (res) => {
-        // this.setState({
-        //   loading: false,
-        // });
+      success: function (res) {
+        this.setState({
+          loading: false,
+        });
         if (res.code === 0) {
           message.success('部署任务创建成功');
           window.location.href = `/#/detail/deploy/${res.data}`;
         } else {
-          message.error('构建失败: ' + res.msg);
+          message.error(`部署失败: ${  res.msg}`);
         }
-      },
-      error: () => {
-        // this.setState({
-        //   loading: false,
-        // });
-        message.error('构建失败！');
-      },
+      }.bind(this),
+      error: function () {
+        this.setState({
+          loading: false,
+        });
+        message.error('部署失败！');
+      }.bind(this),
     });
   }
 
@@ -76,7 +79,7 @@ export default class DeployList extends PureComponent {
 
     const extraContent = (
       <div className={styles.extraContent}>
-        <Button type="primary" style={{ marginRight: 20 }} onClick={this.addService}>
+        <Button type="primary" style={{marginRight: 20}} onClick={this.addService}>
           新增服务
         </Button>
         <Search
@@ -182,6 +185,7 @@ export default class DeployList extends PureComponent {
     };
 
     return (
+      <Spin spinning={this.state.loading}>
       <PageHeaderLayout>
         <div className={styles.standardList}>
           <Card
@@ -204,6 +208,7 @@ export default class DeployList extends PureComponent {
           </Card>
         </div>
       </PageHeaderLayout>
+      </Spin>
     );
   }
 }
