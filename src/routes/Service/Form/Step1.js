@@ -116,9 +116,9 @@ class Step1 extends React.PureComponent {
             {getFieldDecorator('service_name', {
               // initialValue:
               rules: [{ required: true, message: '请输入服务名称' }],
-            })(
-              <Input placeholder="请输入服务名称" />
-            )}
+            })
+            (<Input placeholder="请输入服务名称" />)
+            }
           </Form.Item>
           <Form.Item {...formItemLayout} label="服务描述">
             {getFieldDecorator('service_describe', {

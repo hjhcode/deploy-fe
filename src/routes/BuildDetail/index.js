@@ -54,7 +54,7 @@ export default class AdvancedProfile extends Component {
     const {pathname} = location;
     const pathList = pathname.split('/');
     const id = pathList[pathList.length - 1];
-    const url = `http://192.168.1.102:9001/authv1/construct/detail?id=${ id}`;
+    const url = `http://192.168.43.98:9001/authv1/construct/detail?id=${ id}`;
     $.ajax({
       url,
       type: 'GET',
@@ -77,7 +77,7 @@ export default class AdvancedProfile extends Component {
 
   // componentDidMount() {
   //   $.ajax({
-  //     url: `http://192.168.1.102:9001/authv1/construct/show`,
+  //     url: `http://192.168.43.98:9001/authv1/construct/show`,
   //     type: 'GET',
   //     success: res => {
   //       if (res.code === 0) {
@@ -140,20 +140,16 @@ export default class AdvancedProfile extends Component {
     console.log(data);
     return (
       <PageHeaderLayout
-        title="{data.project_name}"
+        title={data.project_name}
         logo={
           <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png" />
         }
         content={
           <DescriptionList className={styles.headerList} size="small" col="2">
-            <Description term="创建人">曲丽丽</Description>
-            <Description term="订购产品">XX 服务</Description>
-            <Description term="创建时间">2017-07-07</Description>
-            <Description term="关联单据">
-              <a href="">12421</a>
-            </Description>
-            <Description term="生效日期">2017-07-07 ~ 2017-08-08</Description>
-            <Description term="备注">请于两个工作日内确认</Description>
+            <Description term="创建人">{data.account_name}</Description>
+            <Description term="创建时间">{data.create_date}</Description>
+            <Description term="描述">{data.project_describe}</Description>
+            <Description term="更新时间">{data.update_date}</Description>
           </DescriptionList>
         }
       >
