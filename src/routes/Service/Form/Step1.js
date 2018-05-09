@@ -64,6 +64,10 @@ class Step1 extends React.PureComponent {
     $.ajax({
       url: `http://192.168.43.98:9001/authv1/mirror/show`,
       type: 'GET',
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
       success: res => {
         if (res.code === 0) {
           this.setState({
@@ -73,6 +77,10 @@ class Step1 extends React.PureComponent {
           $.ajax({
             url: `http://192.168.43.98:9001/authv1/host/show`,
             type: 'GET',
+            xhrFields: {
+              withCredentials: true,
+            },
+            crossDomain: true,
             success: response => {
               if (response.code === 0) {
                 this.setState({

@@ -2,7 +2,7 @@ import React, {Fragment, PureComponent} from 'react';
 import moment from 'moment';
 import {connect} from 'dva';
 import $ from 'jquery';
-import {Badge, Button, Card, Divider, Spin, Input, message, Table} from 'antd';
+import {Badge, Button, Card, Divider, Spin, Input, message, Table, Popconfirm} from 'antd';
 import {Link, routerRedux} from 'dva/router';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './ServiceList.less';
@@ -50,6 +50,10 @@ export default class DeployList extends PureComponent {
     $.ajax({
       url: 'http://192.168.43.98:9001/authv1/service/deploy',
       type: 'POST',
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
       data: {
         service_id: id,
       },
@@ -73,9 +77,45 @@ export default class DeployList extends PureComponent {
     });
   }
 
+  getListByname(name) {
+    this.props.dispatch({
+      type: 'service/search',
+      payload: {
+        name,
+      },
+    });
+  }
+
+  delService(id) {
+    $.ajax({
+      url: 'http://192.168.43.98:9001/authv1/service/del',
+      type: 'POST',
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
+      data: {
+        service_id: id,
+      },
+      dataType: 'json',
+      success: res => {
+        if (res.code === 0) {
+          message.success('删除成功！');
+          this.props.dispatch({
+            type: 'service/fetch',
+          });
+        } else {
+          message.error(res.msg);
+        }
+      },
+      error: () => {
+        message.error('删除失败！');
+      },
+    });
+  }
+
   render() {
     const {service: {list}, loading} = this.props;
-
 
     const extraContent = (
       <div className={styles.extraContent}>
@@ -85,7 +125,9 @@ export default class DeployList extends PureComponent {
         <Search
           className={styles.extraContentSearch}
           placeholder="请输入服务名"
-          onSearch={() => ({})}
+          onSearch={(name) => {
+            this.getListByname(name);
+          }}
         />
       </div>
     );
@@ -165,7 +207,17 @@ export default class DeployList extends PureComponent {
             <Divider type="vertical" />
             <a onClick={() => this.deployService(record.id)} style={{cursor: 'pointer'}}>部署</a>
             <Divider type="vertical" />
-            <Link to={`/detail/deploy/${record.id}`}>删除</Link>
+            <Popconfirm
+              placement="left"
+              title={`您确认删除 ${record.service_name} 项目`}
+              okText="是"
+              cancelText="否"
+              onConfirm={() => {
+                this.delService(record.id);
+              }}
+            >
+              <a>删除</a>
+            </Popconfirm>
           </Fragment>
         ),
       },

@@ -43,6 +43,7 @@ export default class AdvancedProfile extends Component {
     this.handleOk = this.handleOk.bind(this);
     this.startDeploy = this.startDeploy.bind(this);
     this.jump = this.jump.bind(this);
+    this.endDeploy = this.endDeploy.bind(this);
   }
 
   componentDidMount() {
@@ -50,6 +51,10 @@ export default class AdvancedProfile extends Component {
     $.ajax({
       url: `http://192.168.43.98:9001/authv1/deploy/detail?id=${this.props.match.params.id}`,
       type: 'GET',
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
       success: res => {
         if (res.code === 0) {
           this.setState({
@@ -94,6 +99,10 @@ export default class AdvancedProfile extends Component {
     $.ajax({
       url,
       type: 'POST',
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
       data: {deploy_id: this.props.match.params.id, group_id: num},
       success: res => {
         if (res.code === 0) {
@@ -101,6 +110,65 @@ export default class AdvancedProfile extends Component {
             $.ajax({
               url: `http://192.168.43.98:9001/authv1/deploy/detail?id=${this.props.match.params.id}`,
               type: 'GET',
+              xhrFields: {
+                withCredentials: true,
+              },
+              crossDomain: true,
+              success: function (res) {
+                let data = res.data;
+                if (res.code === 0) {
+                  this.setState({
+                    data,
+                    loading: false,
+                  });
+                  let host_list = {};
+                  if (data.host_list) {
+                    host_list = JSON.parse(data.host_list);
+                  }
+                  // console.log(host_list);
+                  if (host_list.stage) {
+                    let stage = host_list.stage;
+                    if (stage[num - 1].stage_status != 1) {
+                      clearInterval(timer);
+                    }
+                  }
+                } else {
+                  message.error(res.msg);
+                }
+              }.bind(this),
+              error: () => {
+                message.error('请求失败！');
+              },
+            });
+          }, 500);
+        }
+      },
+      error: () => {
+        message.error('请求失败！');
+      },
+    });
+  }
+
+  jump(num, host) {
+
+    $.ajax({
+      url: `http://192.168.43.98:9001/authv1/deploy/jump`,
+      type: 'POST',
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
+      data: {deploy_id: this.props.match.params.id, group_id: num, host_id:host},
+      success: res => {
+        if (res.code === 0) {
+          const timer = setInterval(() => {
+            $.ajax({
+              url: `http://192.168.43.98:9001/authv1/deploy/detail?id=${this.props.match.params.id}`,
+              type: 'GET',
+              xhrFields: {
+                withCredentials: true,
+              },
+              crossDomain: true,
               success: function (res) {
                 let data = res.data;
                 if (res.code === 0) {
@@ -134,19 +202,52 @@ export default class AdvancedProfile extends Component {
     });
   }
 
-  jump(num, host) {
-
+  endDeploy() {
     $.ajax({
-      url: `http://192.168.43.98:9001/authv1/deploy/jump`,
+      url: `http://192.168.43.98:9001/authv1/deploy/end`,
       type: 'POST',
-      data: {deploy_id: this.props.match.params.id, group_id: num, host_id:host},
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
+      data: {
+        deploy_id: this.props.match.params.id,
+      },
       success: res => {
         if (res.code === 0) {
-          console.log(res);
+          message.success('操作成功！');
+          location.href = '#/deploy/list';
+        } else {
+          message.error(res.msg);
+        }
+      },
+      error: () => {
+        message.error('请求失败！');
+      },
+    });
+  }
+
+  rollBackDeploy(num) {
+    this.setState({step: 1});
+    const url = `http://192.168.43.98:9001/authv1/deploy/rollback`;
+    $.ajax({
+      url,
+      type: 'POST',
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
+      data: {deploy_id: this.props.match.params.id},
+      success: res => {
+        if (res.code === 0) {
           const timer = setInterval(() => {
             $.ajax({
               url: `http://192.168.43.98:9001/authv1/deploy/detail?id=${this.props.match.params.id}`,
               type: 'GET',
+              xhrFields: {
+                withCredentials: true,
+              },
+              crossDomain: true,
               success: function (res) {
                 let data = res.data;
                 if (res.code === 0) {
@@ -165,6 +266,8 @@ export default class AdvancedProfile extends Component {
                       clearInterval(timer);
                     }
                   }
+                } else {
+                  message.error(res.msg);
                 }
               }.bind(this),
               error: () => {
@@ -172,6 +275,8 @@ export default class AdvancedProfile extends Component {
               },
             });
           }, 500);
+        } else {
+          message.error(res.msg);
         }
       },
       error: () => {
@@ -248,8 +353,13 @@ export default class AdvancedProfile extends Component {
           <Description term="更新日期">{data.update_date}</Description>
         </DescriptionList>
         <div style={{marginBottom: 20, float: 'right'}}>
-          <Button type="primary" disabled={data.deploy_statu != 1} style={{marginRight: 20}}>结束</Button>
-          <Button type="primary" disabled={data.deploy_statu != 1} >回滚</Button>
+          <Button type="primary" disabled={data.deploy_statu !== 1} style={{marginRight: 20}} onClick={this.endDeploy}>结束</Button>
+          <Button type="primary" disabled={data.deploy_statu !== 1}
+             onClick={() => {
+              this.rollBackDeploy(1);
+          }}>
+            回滚
+          </Button>
         </div>
       </div>
     );
@@ -268,21 +378,21 @@ export default class AdvancedProfile extends Component {
           <div style={{clear: 'both'}}/>
           <Card type="inner" title="部署流程">
             第一组
-            <Button type="primary" disabled={b0 > 1} loading={b0 == 1} onClick={() => {
+            <Button type="primary" disabled={b0 > 1} loading={b0 === 1} onClick={() => {
               this.startDeploy(1);
             }} style={{marginRight: 10, float: 'right'}}>开始</Button>
             <Divider style={{margin: '16px 0'}}/>
             <Table columns={columns} dataSource={m0} pagination={false}/>
             <Divider style={{margin: '16px 0'}}/>
             第二组
-            <Button type="primary" disabled={b0 != 2 || b1 > 1} loading={b1==1} onClick={() => {
+            <Button type="primary" disabled={b0 !== 2 || b1 > 1} loading={b1===1} onClick={() => {
               this.startDeploy(2);
             }} style={{marginRight: 10, float: 'right'}}>开始</Button>
             <Divider style={{margin: '16px 0'}}/>
             <Table columns={columns} dataSource={m1} pagination={false}/>
             <Divider style={{margin: '16px 0'}}/>
             第三组
-            <Button type="primary" disabled={b1 != 2 || b2>1} loading={b2==1} onClick={() => {
+            <Button type="primary" disabled={b1 !== 2 || b2>1} loading={b2===1} onClick={() => {
               this.startDeploy(3);
             }} style={{marginRight: 10, float: 'right'}}>开始</Button>
             <Divider style={{margin: '16px 0'}}/>

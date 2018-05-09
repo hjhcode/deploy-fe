@@ -1,4 +1,4 @@
-import { addService, queryServiceList } from '../services/api';
+import { addService, queryServiceList, queryServiceListByName } from '../services/api';
 
 export default {
   namespace: 'service',
@@ -10,6 +10,15 @@ export default {
   effects: {
     *fetch({ payload }, { call, put }) {
       const response = yield call(queryServiceList, payload);
+      const list = response.data.datas;
+      yield put({
+        type: 'queryList',
+        payload: Array.isArray(list) ? list : [],
+      });
+    },
+
+    *search({ payload }, { call, put }) {
+      const response = yield call(queryServiceListByName, payload);
       const list = response.data.datas;
       yield put({
         type: 'queryList',

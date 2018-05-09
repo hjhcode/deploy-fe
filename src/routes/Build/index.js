@@ -41,6 +41,10 @@ class StandardTable extends PureComponent {
     $.ajax({
       url: `http://192.168.43.98:9001/authv1/construct/show`,
       type: 'GET',
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
       success: res => {
         if (res.code === 0) {
           this.setState({

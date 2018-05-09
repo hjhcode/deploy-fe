@@ -49,6 +49,10 @@ class Step2 extends React.PureComponent {
           $.ajax({
             url: `http://192.168.43.98:9001/authv1/service/add`,
             type: 'POST',
+            xhrFields: {
+              withCredentials: true,
+            },
+            crossDomain: true,
             data: reqdata,
             success: res => {
               if (res.code === 0) {

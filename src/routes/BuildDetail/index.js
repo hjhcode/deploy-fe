@@ -55,6 +55,10 @@ export default class AdvancedProfile extends Component {
     $.ajax({
       url,
       type: 'GET',
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
       success: res => {
         if (res.code === 0) {
           this.setState({
@@ -116,6 +120,10 @@ export default class AdvancedProfile extends Component {
     $.ajax({
       url,
       type: 'POST',
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
       data: {construct_id: id},
       success: res => {
         if (res.code === 0) {
@@ -123,6 +131,10 @@ export default class AdvancedProfile extends Component {
             $.ajax({
               url: `http://192.168.43.98:9001/authv1/construct/detail?id=${id}`,
               type: 'GET',
+              xhrFields: {
+                withCredentials: true,
+              },
+              crossDomain: true,
               success: resp => {
                 if (resp.code === 0) {
                   // resp.data.construct_log = 'hdjfhdsjfgfcgvsd';

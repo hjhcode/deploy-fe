@@ -116,7 +116,7 @@ class BasicLayout extends React.PureComponent {
     const { pathname } = location;
     let title = 'Ant Design Pro';
     if (routerData[pathname] && routerData[pathname].name) {
-      title = `${routerData[pathname].name} - Ant Design Pro`;
+      title = `${routerData[pathname].name} -部署平台`;
     }
     return title;
   }
@@ -226,7 +226,7 @@ class BasicLayout extends React.PureComponent {
                   redirectPath="/exception/403"
                 />
               ))}
-              <Redirect exact from="/" to={bashRedirect} />
+              <Redirect exact from="/" to="/project" />
               <Route render={NotFound} />
             </Switch>
           </Content>
@@ -235,26 +235,26 @@ class BasicLayout extends React.PureComponent {
               links={[
                 {
                   key: 'Pro 首页',
-                  title: 'Pro 首页',
-                  href: 'http://pro.ant.design',
+                  title: '首页',
+                  href: '#/project',
                   blankTarget: true,
                 },
                 {
                   key: 'github',
                   title: <Icon type="github" />,
-                  href: 'https://github.com/ant-design/ant-design-pro',
+                  href: 'https://github.com/hjhcode/deploy-web',
                   blankTarget: true,
                 },
                 {
                   key: 'Ant Design',
-                  title: 'Ant Design',
-                  href: 'http://ant.design',
+                  title: '部署平台',
+                  href: '#/project',
                   blankTarget: true,
                 },
               ]}
               copyright={
                 <Fragment>
-                  Copyright <Icon type="copyright" /> 2018 蚂蚁金服体验技术部出品
+                  Copyright <Icon type="copyright" /> 2018 西安邮电大学
                 </Fragment>
               }
             />

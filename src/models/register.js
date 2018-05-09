@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import { fakeRegister } from '../services/api';
 import { setAuthority } from '../utils/authority';
 import { reloadAuthorized } from '../utils/Authorized';
@@ -10,12 +11,14 @@ export default {
   },
 
   effects: {
-    *submit(_, { call, put }) {
-      const response = yield call(fakeRegister);
-      yield put({
-        type: 'registerHandle',
-        payload: response,
-      });
+    *submit({ payload }, { call }) {
+      const response = yield call(fakeRegister, payload);
+      if (response.code === 0) {
+        message.success('注册成功！');
+        location.href = '#/user/login';
+      } else {
+        message.error('注册失败！');
+      }
     },
   },
 

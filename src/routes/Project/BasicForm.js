@@ -27,6 +27,10 @@ export default class BasicForms extends PureComponent {
     $.ajax({
       url: 'http://192.168.43.98:9001/authv1/project/add',
       type: 'POST',
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
       data: values,
       success: res => {
         if (res.code === 0) {
@@ -52,6 +56,10 @@ export default class BasicForms extends PureComponent {
     $.ajax({
       url: 'http://192.168.43.98:9001/authv1/project/update',
       type: 'POST',
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
       data: values,
       success: (res) => {
         if (res.code === 0) {

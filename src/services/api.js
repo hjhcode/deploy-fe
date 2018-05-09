@@ -15,6 +15,10 @@ export async function queryServiceList() {
   return request(`${endpoint}/authv1/service/show`);
 }
 
+export async function queryServiceListByName(params) {
+  return request(`${endpoint}/authv1/service/search?${stringify(params)}`);
+}
+
 export async function addService() {
   return request(`${endpoint}/authv1/service/add`);
 }
@@ -83,14 +87,14 @@ export async function queryFakeList(params) {
 }
 
 export async function fakeAccountLogin(params) {
-  return request('/api/login/account', {
+  return request(`${endpoint}/apiv1/login`, {
     method: 'POST',
     body: params,
   });
 }
 
 export async function fakeRegister(params) {
-  return request('/api/register', {
+  return request(`${endpoint}/apiv1/register`, {
     method: 'POST',
     body: params,
   });

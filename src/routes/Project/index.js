@@ -66,8 +66,11 @@ class CusTableDemo extends React.Component {
       // url:`http://192.168.43.98:9001/authv1/project/show?${stringify(params)}`,
       url: `http://192.168.43.98:9001/authv1/project/show`,
       type: 'GET',
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
       success: res => {
-        console.log(res);
         if (res.code === 0) {
           this.setState({
             loading: false,
@@ -106,14 +109,20 @@ class CusTableDemo extends React.Component {
     $.ajax({
       url: 'http://192.168.43.98:9001/authv1/project/del',
       type: 'POST',
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
       data: {
         project_id: id,
       },
       dataType: 'json',
       success: res => {
-        if (res) {
+        if (res.code === 0) {
           message.success('删除成功！');
           this.loadProjectList();
+        } else {
+          message.error(res.msg);
         }
       },
       error: () => {
@@ -129,6 +138,10 @@ class CusTableDemo extends React.Component {
     $.ajax({
       url: 'http://192.168.43.98:9001/authv1/project/construct',
       type: 'POST',
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
       data: {
         project_id: id,
       },
@@ -159,6 +172,10 @@ class CusTableDemo extends React.Component {
     $.ajax({
       url: `http://192.168.43.98:9001/authv1/project/search?${stringify(params)}`,
       type: 'GET',
+      xhrFields: {
+        withCredentials: true,
+      },
+      crossDomain: true,
       success: function (res) {
         if (res.code === 0) {
           this.setState({

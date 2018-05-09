@@ -1,6 +1,6 @@
 [English](./README.md) | 简体中文
 
-# Ant Design Pro
+#部署平台
 
 [![](https://img.shields.io/travis/ant-design/ant-design-pro.svg?style=flat-square)](https://travis-ci.org/ant-design/ant-design-pro) [![Build status](https://ci.appveyor.com/api/projects/status/67fxu2by3ibvqtat/branch/master?svg=true)](https://ci.appveyor.com/project/afc163/ant-design-pro/branch/master)  [![Gitter](https://badges.gitter.im/ant-design/ant-design-pro.svg)](https://gitter.im/ant-design/ant-design-pro?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
@@ -86,6 +86,6 @@ $ pro new
 
 我们非常欢迎你的贡献，你可以通过以下方式和我们一起共建 :smiley:：
 
-- 在你的公司或个人项目中使用 Ant Design Pro。
+- 在你的公司或个人项目中使用部署平台。
 - 通过 [Issue](http://github.com/ant-design/ant-design-pro/issues) 报告 bug 或进行咨询。
 - 提交 [Pull Request](http://github.com/ant-design/ant-design-pro/pulls) 改进 Pro 的代码。
