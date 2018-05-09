@@ -1,11 +1,11 @@
 import React from 'react';
 import $ from 'jquery';
 import moment from 'moment';
-import {stringify} from 'qs';
-import {Button, Card, Col, Divider, Input, message, Modal, Popconfirm, Row, Table} from 'antd';
+import { stringify } from 'qs';
+import { Button, Card, Col, Divider, Input, message, Modal, Popconfirm, Row, Table } from 'antd';
 import BasicForm from './BasicForm';
 
-const {Search} = Input;
+const { Search } = Input;
 
 // function subscription(state) {
 //   const type = state > 80 ? 'success' : state < 30 ? 'error' : 'info';
@@ -34,7 +34,7 @@ for (let i = 1; i <= 36; i += 1) {
 }
 
 class CusTableDemo extends React.Component {
-  s
+  s;
 
   constructor(props) {
     super(props);
@@ -63,8 +63,8 @@ class CusTableDemo extends React.Component {
 
   loadProjectList() {
     $.ajax({
-      // url:`http://192.168.43.98:9001/authv1/project/show?${stringify(params)}`,
-      url: `http://192.168.43.98:9001/authv1/project/show`,
+      // url:`http://xupt3.fightcoder.com:9002/authv1/project/show?${stringify(params)}`,
+      url: `http://xupt3.fightcoder.com:9002/authv1/project/show`,
       type: 'GET',
       xhrFields: {
         withCredentials: true,
@@ -107,7 +107,7 @@ class CusTableDemo extends React.Component {
 
   delProject(id) {
     $.ajax({
-      url: 'http://192.168.43.98:9001/authv1/project/del',
+      url: 'http://xupt3.fightcoder.com:9002/authv1/project/del',
       type: 'POST',
       xhrFields: {
         withCredentials: true,
@@ -136,7 +136,7 @@ class CusTableDemo extends React.Component {
       loading: true,
     });
     $.ajax({
-      url: 'http://192.168.43.98:9001/authv1/project/construct',
+      url: 'http://xupt3.fightcoder.com:9002/authv1/project/construct',
       type: 'POST',
       xhrFields: {
         withCredentials: true,
@@ -145,7 +145,7 @@ class CusTableDemo extends React.Component {
       data: {
         project_id: id,
       },
-      success: (res) => {
+      success: res => {
         this.setState({
           loading: false,
         });
@@ -170,13 +170,13 @@ class CusTableDemo extends React.Component {
       name: value,
     };
     $.ajax({
-      url: `http://192.168.43.98:9001/authv1/project/search?${stringify(params)}`,
+      url: `http://xupt3.fightcoder.com:9002/authv1/project/search?${stringify(params)}`,
       type: 'GET',
       xhrFields: {
         withCredentials: true,
       },
       crossDomain: true,
-      success: function (res) {
+      success: function(res) {
         if (res.code === 0) {
           this.setState({
             data: res.data.datas,
@@ -257,9 +257,9 @@ class CusTableDemo extends React.Component {
             >
               修改
             </a>
-            <Divider type="vertical"/>
+            <Divider type="vertical" />
             <a onClick={() => this.buildProject(id)}>构建</a>
-            <Divider type="vertical"/>
+            <Divider type="vertical" />
             <Popconfirm
               placement="left"
               title={`您确认删除 ${record.project_name} 项目`}
@@ -276,7 +276,7 @@ class CusTableDemo extends React.Component {
       },
     ];
 
-    const {visible, titleName, project, type, loading} = this.state;
+    const { visible, titleName, project, type, loading } = this.state;
     return (
       <div>
         <Card hoverable>
@@ -285,19 +285,19 @@ class CusTableDemo extends React.Component {
               <Col xs={24} sm={24} md={12} lg={8} xl={8}>
                 <h2>工程列表</h2>
               </Col>
-              <Col xs={24} sm={24} md={12} lg={16} xl={16} style={{textAlign: 'right'}}>
-                <Button type="primary" style={{marginRight: 20}} onClick={this.addProject}>
+              <Col xs={24} sm={24} md={12} lg={16} xl={16} style={{ textAlign: 'right' }}>
+                <Button type="primary" style={{ marginRight: 20 }} onClick={this.addProject}>
                   新增项目
                 </Button>
                 <Search
                   placeholder="输入工程名进行搜索"
-                  style={{width: 200}}
+                  style={{ width: 200 }}
                   onSearch={value => this.searchProject(value)}
                 />
               </Col>
             </Row>
           </div>
-          <Table {...this.state} columns={columns} dataSource={this.state.data} loading={loading}/>
+          <Table {...this.state} columns={columns} dataSource={this.state.data} loading={loading} />
         </Card>
         <Modal
           title={titleName}

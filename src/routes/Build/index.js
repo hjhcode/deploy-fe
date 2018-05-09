@@ -1,7 +1,7 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import $ from 'jquery';
-import {Link} from 'dva/router';
-import {Badge, Card, message, Table} from 'antd';
+import { Link } from 'dva/router';
+import { Badge, Card, message, Table } from 'antd';
 import moment from 'moment/moment';
 import styles from './index.less';
 
@@ -39,7 +39,7 @@ class StandardTable extends PureComponent {
 
   componentDidMount() {
     $.ajax({
-      url: `http://192.168.43.98:9001/authv1/construct/show`,
+      url: `http://xupt3.fightcoder.com:9002/authv1/construct/show`,
       type: 'GET',
       xhrFields: {
         withCredentials: true,
@@ -109,7 +109,7 @@ class StandardTable extends PureComponent {
       },
     ];
 
-    const {loading} = this.state;
+    const { loading } = this.state;
 
     return (
       <Card border="false">

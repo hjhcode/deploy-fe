@@ -1,13 +1,13 @@
-import React, {Component} from 'react';
-import {connect} from 'dva';
+import React, { Component } from 'react';
+import { connect } from 'dva';
 import $ from 'jquery';
-import {Button, Card, Collapse, Divider, message, Spin, Table, Badge} from 'antd';
+import { Button, Card, Collapse, Divider, message, Spin, Table, Badge } from 'antd';
 import DescriptionList from 'components/DescriptionList';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './index.less';
 
-const {Description} = DescriptionList;
-const {Panel} = Collapse;
+const { Description } = DescriptionList;
+const { Panel } = Collapse;
 
 const status = ['待部署', '部署中', '部署失败', '跳过部署', '部署完成'];
 const statusMap = ['processing', 'processing', 'error', 'processing', 'succeed'];
@@ -27,11 +27,10 @@ for (let i = 0; i < 5; i++) {
   });
 }
 
-@connect(({profile}) => ({
+@connect(({ profile }) => ({
   profile,
 }))
 export default class AdvancedProfile extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -48,9 +47,8 @@ export default class AdvancedProfile extends Component {
   }
 
   componentDidMount() {
-
     $.ajax({
-      url: `http://192.168.43.98:9001/authv1/deploy/detail?id=${this.props.match.params.id}`,
+      url: `http://xupt3.fightcoder.com:9002/authv1/deploy/detail?id=${this.props.match.params.id}`,
       type: 'GET',
       xhrFields: {
         withCredentials: true,
@@ -95,8 +93,8 @@ export default class AdvancedProfile extends Component {
   }
 
   startDeploy(num) {
-    this.setState({step: 1});
-    const url = `http://192.168.43.98:9001/authv1/deploy/start`;
+    this.setState({ step: 1 });
+    const url = `http://xupt3.fightcoder.com:9002/authv1/deploy/start`;
     $.ajax({
       url,
       type: 'POST',
@@ -104,18 +102,20 @@ export default class AdvancedProfile extends Component {
         withCredentials: true,
       },
       crossDomain: true,
-      data: {deploy_id: this.props.match.params.id, group_id: num},
+      data: { deploy_id: this.props.match.params.id, group_id: num },
       success: res => {
         if (res.code === 0) {
           const timer = setInterval(() => {
             $.ajax({
-              url: `http://192.168.43.98:9001/authv1/deploy/detail?id=${this.props.match.params.id}`,
+              url: `http://xupt3.fightcoder.com:9002/authv1/deploy/detail?id=${
+                this.props.match.params.id
+              }`,
               type: 'GET',
               xhrFields: {
                 withCredentials: true,
               },
               crossDomain: true,
-              success: function (res) {
+              success: function(res) {
                 let data = res.data;
                 if (res.code === 0) {
                   this.setState({
@@ -151,26 +151,27 @@ export default class AdvancedProfile extends Component {
   }
 
   jump(num, host) {
-
     $.ajax({
-      url: `http://192.168.43.98:9001/authv1/deploy/jump`,
+      url: `http://xupt3.fightcoder.com:9002/authv1/deploy/jump`,
       type: 'POST',
       xhrFields: {
         withCredentials: true,
       },
       crossDomain: true,
-      data: {deploy_id: this.props.match.params.id, group_id: num, host_id:host},
+      data: { deploy_id: this.props.match.params.id, group_id: num, host_id: host },
       success: res => {
         if (res.code === 0) {
           const timer = setInterval(() => {
             $.ajax({
-              url: `http://192.168.43.98:9001/authv1/deploy/detail?id=${this.props.match.params.id}`,
+              url: `http://xupt3.fightcoder.com:9002/authv1/deploy/detail?id=${
+                this.props.match.params.id
+              }`,
               type: 'GET',
               xhrFields: {
                 withCredentials: true,
               },
               crossDomain: true,
-              success: function (res) {
+              success: function(res) {
                 let data = res.data;
                 if (res.code === 0) {
                   this.setState({
@@ -205,7 +206,7 @@ export default class AdvancedProfile extends Component {
 
   endDeploy() {
     $.ajax({
-      url: `http://192.168.43.98:9001/authv1/deploy/end`,
+      url: `http://xupt3.fightcoder.com:9002/authv1/deploy/end`,
       type: 'POST',
       xhrFields: {
         withCredentials: true,
@@ -229,8 +230,8 @@ export default class AdvancedProfile extends Component {
   }
 
   rollBackDeploy(num) {
-    this.setState({step: 1});
-    const url = `http://192.168.43.98:9001/authv1/deploy/rollback`;
+    this.setState({ step: 1 });
+    const url = `http://xupt3.fightcoder.com:9002/authv1/deploy/rollback`;
     $.ajax({
       url,
       type: 'POST',
@@ -238,18 +239,20 @@ export default class AdvancedProfile extends Component {
         withCredentials: true,
       },
       crossDomain: true,
-      data: {deploy_id: this.props.match.params.id},
+      data: { deploy_id: this.props.match.params.id },
       success: res => {
         if (res.code === 0) {
           const timer = setInterval(() => {
             $.ajax({
-              url: `http://192.168.43.98:9001/authv1/deploy/detail?id=${this.props.match.params.id}`,
+              url: `http://xupt3.fightcoder.com:9002/authv1/deploy/detail?id=${
+                this.props.match.params.id
+              }`,
               type: 'GET',
               xhrFields: {
                 withCredentials: true,
               },
               crossDomain: true,
-              success: function (res) {
+              success: function(res) {
                 let data = res.data;
                 if (res.code === 0) {
                   this.setState({
@@ -287,8 +290,7 @@ export default class AdvancedProfile extends Component {
   }
 
   render() {
-
-    const {data} = this.state;
+    const { data } = this.state;
     let host_list = {};
     let stage = [];
     let m0 = [];
@@ -311,7 +313,6 @@ export default class AdvancedProfile extends Component {
       m2 = host_list.stage[2].machine;
     }
 
-
     const columns = [
       {
         key: 'id',
@@ -328,7 +329,7 @@ export default class AdvancedProfile extends Component {
         title: '部署状态',
         dataIndex: 'machine_status',
         render(val) {
-          return <span>{status[val]}</span>
+          return <span>{status[val]}</span>;
         },
       },
       // {
@@ -353,53 +354,85 @@ export default class AdvancedProfile extends Component {
           <Description term="描述">{data.service_describe}</Description>
           <Description term="更新日期">{data.update_date}</Description>
         </DescriptionList>
-        <div style={{marginBottom: 20, float: 'right'}}>
-          <Button type="primary" disabled={data.deploy_statu !== 1} style={{marginRight: 20}} onClick={this.endDeploy}>结束</Button>
-          <Button type="primary" disabled={data.deploy_statu !== 1}
-             onClick={() => {
+        <div style={{ marginBottom: 20, float: 'right' }}>
+          <Button
+            type="primary"
+            disabled={data.deploy_statu !== 1}
+            style={{ marginRight: 20 }}
+            onClick={this.endDeploy}
+          >
+            结束
+          </Button>
+          <Button
+            type="primary"
+            disabled={data.deploy_statu !== 1}
+            onClick={() => {
               this.rollBackDeploy(1);
-          }}>
+            }}
+          >
             回滚
           </Button>
         </div>
       </div>
     );
 
-
     return (
       <Spin spinning={this.state.loading}>
         <PageHeaderLayout
           title={data.service_name}
           logo={
-            <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png"/>
+            <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png" />
           }
           content={description}
         >
-
-          <div style={{clear: 'both'}}/>
+          <div style={{ clear: 'both' }} />
           <Card type="inner" title="部署流程">
             第一组
-            <Button type="primary" disabled={b0 > 1} loading={b0 === 1} onClick={() => {
-              this.startDeploy(1);
-            }} style={{marginRight: 10, float: 'right'}}>开始</Button>
-            <Divider style={{margin: '16px 0'}}/>
-            <Table columns={columns} dataSource={m0} pagination={false}/>
-            <Divider style={{margin: '16px 0'}}/>
+            <Button
+              type="primary"
+              disabled={b0 > 1}
+              loading={b0 === 1}
+              onClick={() => {
+                this.startDeploy(1);
+              }}
+              style={{ marginRight: 10, float: 'right' }}
+            >
+              开始
+            </Button>
+            <Divider style={{ margin: '16px 0' }} />
+            <Table columns={columns} dataSource={m0} pagination={false} />
+            <Divider style={{ margin: '16px 0' }} />
             第二组
-            <Button type="primary" disabled={b0 !== 2 || b1 > 1} loading={b1===1} onClick={() => {
-              this.startDeploy(2);
-            }} style={{marginRight: 10, float: 'right'}}>开始</Button>
-            <Divider style={{margin: '16px 0'}}/>
-            <Table columns={columns} dataSource={m1} pagination={false}/>
-            <Divider style={{margin: '16px 0'}}/>
+            <Button
+              type="primary"
+              disabled={b0 !== 2 || b1 > 1}
+              loading={b1 === 1}
+              onClick={() => {
+                this.startDeploy(2);
+              }}
+              style={{ marginRight: 10, float: 'right' }}
+            >
+              开始
+            </Button>
+            <Divider style={{ margin: '16px 0' }} />
+            <Table columns={columns} dataSource={m1} pagination={false} />
+            <Divider style={{ margin: '16px 0' }} />
             第三组
-            <Button type="primary" disabled={b1 !== 2 || b2>1} loading={b2===1} onClick={() => {
-              this.startDeploy(3);
-            }} style={{marginRight: 10, float: 'right'}}>开始</Button>
-            <Divider style={{margin: '16px 0'}}/>
-            <Table columns={columns} dataSource={m2} pagination={false}/>
+            <Button
+              type="primary"
+              disabled={b1 !== 2 || b2 > 1}
+              loading={b2 === 1}
+              onClick={() => {
+                this.startDeploy(3);
+              }}
+              style={{ marginRight: 10, float: 'right' }}
+            >
+              开始
+            </Button>
+            <Divider style={{ margin: '16px 0' }} />
+            <Table columns={columns} dataSource={m2} pagination={false} />
           </Card>
-          <Divider style={{margin: '16px 0'}}/>
+          <Divider style={{ margin: '16px 0' }} />
           {/*<Collapse accordion>*/}
           {/*<Panel header={<span>哈哈哈<Button type="primary" style={{float: 'right', marginRight: 20, marginTop: -5}}>开始</Button></span>} key="1">*/}
           {/*<Table columns={columns} dataSource={data} pagination={false} />*/}
@@ -414,7 +447,11 @@ export default class AdvancedProfile extends Component {
           {/*<div>{this.state.log}</div>*/}
           {/*</Modal>*/}
           <Card type="inner" title="日志信息">
-            <div className={styles.noData} dangerouslySetInnerHTML={{__html: data.deploy_log}} style={{color: '#000'}}/>
+            <div
+              className={styles.noData}
+              dangerouslySetInnerHTML={{ __html: data.deploy_log }}
+              style={{ color: '#000' }}
+            />
           </Card>
         </PageHeaderLayout>
       </Spin>

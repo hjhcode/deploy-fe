@@ -1,31 +1,31 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Debounce from 'lodash-decorators/debounce';
 import Bind from 'lodash-decorators/bind';
-import {connect} from 'dva';
-import {Badge, Button, Card, Popover, message, Steps} from 'antd';
+import { connect } from 'dva';
+import { Badge, Button, Card, Popover, message, Steps } from 'antd';
 import DescriptionList from 'components/DescriptionList';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './index.less';
-import $ from "jquery";
+import $ from 'jquery';
 
-const {Step} = Steps;
-const {Description} = DescriptionList;
+const { Step } = Steps;
+const { Description } = DescriptionList;
 
 const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth;
 
 const popoverContent = (
-  <div style={{width: 160}}>
+  <div style={{ width: 160 }}>
     吴加号
-    <span className={styles.textSecondary} style={{float: 'right'}}>
-      <Badge status="default" text={<span style={{color: 'rgba(0, 0, 0, 0.45)'}}>未响应</span>} />
+    <span className={styles.textSecondary} style={{ float: 'right' }}>
+      <Badge status="default" text={<span style={{ color: 'rgba(0, 0, 0, 0.45)' }}>未响应</span>} />
     </span>
-    <div className={styles.textSecondary} style={{marginTop: 4}}>
+    <div className={styles.textSecondary} style={{ marginTop: 4 }}>
       耗时：2小时25分钟
     </div>
   </div>
 );
 
-const customDot = (dot, {status}) =>
+const customDot = (dot, { status }) =>
   status === 'process' ? (
     <Popover placement="topLeft" arrowPointAtCenter content={popoverContent}>
       {dot}
@@ -34,7 +34,7 @@ const customDot = (dot, {status}) =>
     dot
   );
 
-@connect(({profile}) => ({
+@connect(({ profile }) => ({
   profile,
 }))
 export default class AdvancedProfile extends Component {
@@ -51,7 +51,7 @@ export default class AdvancedProfile extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    const url = `http://192.168.43.98:9001/authv1/construct/detail?id=${id}`;
+    const url = `http://xupt3.fightcoder.com:9002/authv1/construct/detail?id=${id}`;
     $.ajax({
       url,
       type: 'GET',
@@ -77,7 +77,7 @@ export default class AdvancedProfile extends Component {
 
   // componentDidMount() {
   //   $.ajax({
-  //     url: `http://192.168.43.98:9001/authv1/construct/show`,
+  //     url: `http://xupt3.fightcoder.com:9002/authv1/construct/show`,
   //     type: 'GET',
   //     success: res => {
   //       if (res.code === 0) {
@@ -100,7 +100,7 @@ export default class AdvancedProfile extends Component {
   @Bind()
   @Debounce(200)
   setStepDirection() {
-    const {stepDirection} = this.state;
+    const { stepDirection } = this.state;
     const w = getWindowWidth();
     if (stepDirection !== 'vertical' && w <= 576) {
       this.setState({
@@ -114,9 +114,9 @@ export default class AdvancedProfile extends Component {
   }
 
   startBuild() {
-    this.setState({step: 1});
+    this.setState({ step: 1 });
     const { id } = this.props.match.params;
-    const url = `http://192.168.43.98:9001/authv1/construct/start`;
+    const url = `http://xupt3.fightcoder.com:9002/authv1/construct/start`;
     $.ajax({
       url,
       type: 'POST',
@@ -124,12 +124,12 @@ export default class AdvancedProfile extends Component {
         withCredentials: true,
       },
       crossDomain: true,
-      data: {construct_id: id},
+      data: { construct_id: id },
       success: res => {
         if (res.code === 0) {
-          const timer = setInterval( () => {
+          const timer = setInterval(() => {
             $.ajax({
-              url: `http://192.168.43.98:9001/authv1/construct/detail?id=${id}`,
+              url: `http://xupt3.fightcoder.com:9002/authv1/construct/detail?id=${id}`,
               type: 'GET',
               xhrFields: {
                 withCredentials: true,
@@ -142,7 +142,7 @@ export default class AdvancedProfile extends Component {
                     data: resp.data,
                   });
 
-                  if (resp.data.construct_statu >= 2 ) {
+                  if (resp.data.construct_statu >= 2) {
                     this.setState({
                       step: 2,
                     });
@@ -177,12 +177,12 @@ export default class AdvancedProfile extends Component {
         </Button>
       );
     } else {
-      return <Button disabled >结束</Button>;
+      return <Button disabled>结束</Button>;
     }
   }
 
   render() {
-    const {stepDirection, step, data} = this.state;
+    const { stepDirection, step, data } = this.state;
     return (
       <PageHeaderLayout
         title={data.project_name}
@@ -198,23 +198,27 @@ export default class AdvancedProfile extends Component {
           </DescriptionList>
         }
       >
-        <Card title="构建进度" style={{marginBottom: 24}} bordered={false}>
-          <div style={{display: 'flex', justifyContent: 'space-between'}}>
+        <Card title="构建进度" style={{ marginBottom: 24 }} bordered={false}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Steps
               direction={stepDirection}
               progressDot={customDot}
               current={step >= 2 ? 2 : step}
-              style={{width: '88%'}}
+              style={{ width: '88%' }}
             >
               <Step title="未构建" />
               <Step title="构建中" />
               <Step title={data.construct_statu <= 2 ? '完成' : '失败'} />
             </Steps>
-            <div style={{width: '10%'}}>{this.renderButton(step)}</div>
+            <div style={{ width: '10%' }}>{this.renderButton(step)}</div>
           </div>
         </Card>
-        <Card title="日志信息" style={{marginBottom: 24}} bordered={false}>
-          <div className={styles.noData} dangerouslySetInnerHTML={{__html: data.construct_log}} style={{color: '#000'}}/>
+        <Card title="日志信息" style={{ marginBottom: 24 }} bordered={false}>
+          <div
+            className={styles.noData}
+            dangerouslySetInnerHTML={{ __html: data.construct_log }}
+            style={{ color: '#000' }}
+          />
         </Card>
       </PageHeaderLayout>
     );

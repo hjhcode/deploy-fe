@@ -1,22 +1,21 @@
-import React, {Fragment, PureComponent} from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import moment from 'moment';
-import {connect} from 'dva';
+import { connect } from 'dva';
 import $ from 'jquery';
-import {Badge, Button, Card, Divider, Spin, Input, message, Table, Popconfirm} from 'antd';
-import {Link, routerRedux} from 'dva/router';
+import { Badge, Button, Card, Divider, Spin, Input, message, Table, Popconfirm } from 'antd';
+import { Link, routerRedux } from 'dva/router';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './ServiceList.less';
 
-const {Search} = Input;
+const { Search } = Input;
 const status = ['停止', '运行中', '成功', '失败'];
 const statusMap = ['error', 'processing', 'succeed'];
 
-@connect(({service, loading}) => ({
+@connect(({ service, loading }) => ({
   service,
   loading: loading.models.service,
 }))
 export default class DeployList extends PureComponent {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -34,21 +33,21 @@ export default class DeployList extends PureComponent {
   }
 
   addService() {
-    this.props.dispatch(routerRedux.push({
-      pathname: '/service/create',
-    }));
+    this.props.dispatch(
+      routerRedux.push({
+        pathname: '/service/create',
+      })
+    );
   }
 
-  delService() {
-
-  }
+  delService() {}
 
   deployService(id) {
     this.setState({
       loading: true,
     });
     $.ajax({
-      url: 'http://192.168.43.98:9001/authv1/service/deploy',
+      url: 'http://xupt3.fightcoder.com:9002/authv1/service/deploy',
       type: 'POST',
       xhrFields: {
         withCredentials: true,
@@ -57,7 +56,7 @@ export default class DeployList extends PureComponent {
       data: {
         service_id: id,
       },
-      success: function (res) {
+      success: function(res) {
         this.setState({
           loading: false,
         });
@@ -65,10 +64,10 @@ export default class DeployList extends PureComponent {
           message.success('部署任务创建成功');
           window.location.href = `/#/detail/deploy/${res.data}`;
         } else {
-          message.error(`部署失败: ${  res.msg}`);
+          message.error(`部署失败: ${res.msg}`);
         }
       }.bind(this),
-      error: function () {
+      error: function() {
         this.setState({
           loading: false,
         });
@@ -88,7 +87,7 @@ export default class DeployList extends PureComponent {
 
   delService(id) {
     $.ajax({
-      url: 'http://192.168.43.98:9001/authv1/service/del',
+      url: 'http://xupt3.fightcoder.com:9002/authv1/service/del',
       type: 'POST',
       xhrFields: {
         withCredentials: true,
@@ -115,17 +114,17 @@ export default class DeployList extends PureComponent {
   }
 
   render() {
-    const {service: {list}, loading} = this.props;
+    const { service: { list }, loading } = this.props;
 
     const extraContent = (
       <div className={styles.extraContent}>
-        <Button type="primary" style={{marginRight: 20}} onClick={this.addService}>
+        <Button type="primary" style={{ marginRight: 20 }} onClick={this.addService}>
           新增服务
         </Button>
         <Search
           className={styles.extraContentSearch}
           placeholder="请输入服务名"
-          onSearch={(name) => {
+          onSearch={name => {
             this.getListByname(name);
           }}
         />
@@ -205,7 +204,9 @@ export default class DeployList extends PureComponent {
           <Fragment>
             <Link to={`/service/update/${record.id}`}>修改</Link>
             <Divider type="vertical" />
-            <a onClick={() => this.deployService(record.id)} style={{cursor: 'pointer'}}>部署</a>
+            <a onClick={() => this.deployService(record.id)} style={{ cursor: 'pointer' }}>
+              部署
+            </a>
             <Divider type="vertical" />
             <Popconfirm
               placement="left"
@@ -238,28 +239,28 @@ export default class DeployList extends PureComponent {
 
     return (
       <Spin spinning={this.state.loading}>
-      <PageHeaderLayout>
-        <div className={styles.standardList}>
-          <Card
-            className={styles.listCard}
-            bordered={false}
-            title="服务列表"
-            style={{marginTop: 24}}
-            bodyStyle={{padding: '0 32px 40px 32px'}}
-            extra={extraContent}
-          >
-            <div className={styles.tableList}>
-              <Table
-                className={styles.tableList}
-                loading={loading}
-                dataSource={list}
-                columns={columns}
-                pagination={pagination}
-              />
-            </div>
-          </Card>
-        </div>
-      </PageHeaderLayout>
+        <PageHeaderLayout>
+          <div className={styles.standardList}>
+            <Card
+              className={styles.listCard}
+              bordered={false}
+              title="服务列表"
+              style={{ marginTop: 24 }}
+              bodyStyle={{ padding: '0 32px 40px 32px' }}
+              extra={extraContent}
+            >
+              <div className={styles.tableList}>
+                <Table
+                  className={styles.tableList}
+                  loading={loading}
+                  dataSource={list}
+                  columns={columns}
+                  pagination={pagination}
+                />
+              </div>
+            </Card>
+          </div>
+        </PageHeaderLayout>
       </Spin>
     );
   }

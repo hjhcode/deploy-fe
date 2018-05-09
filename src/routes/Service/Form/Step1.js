@@ -5,7 +5,7 @@ import { Form, Input, Button, Select, message } from 'antd';
 import { routerRedux } from 'dva/router';
 import styles from './style.less';
 
-const {TextArea} = Input;
+const { TextArea } = Input;
 const { Option } = Select;
 
 const formItemLayout = {
@@ -17,10 +17,11 @@ const formItemLayout = {
   },
 };
 
-function getStage (values) {
-  const stage = [{
-    machine: [],
-  },
+function getStage(values) {
+  const stage = [
+    {
+      machine: [],
+    },
     {
       machine: [],
     },
@@ -34,23 +35,21 @@ function getStage (values) {
   const { group3 } = values;
 
   for (let i = 0; i < group1.length; i += 1) {
-    stage[0].machine.push({id: Number(group1[i])});
+    stage[0].machine.push({ id: Number(group1[i]) });
   }
 
   for (let i = 0; i < group2.length; i += 1) {
-    stage[1].machine.push({id: Number(group2[i])});
+    stage[1].machine.push({ id: Number(group2[i]) });
   }
 
   for (let i = 0; i < group3.length; i += 1) {
-    stage[2].machine.push({id: Number(group3[i])});
+    stage[2].machine.push({ id: Number(group3[i]) });
   }
-  return {stage};
-
+  return { stage };
 }
 
 @Form.create()
 class Step1 extends React.PureComponent {
-
   constructor(props) {
     super(props);
 
@@ -62,7 +61,7 @@ class Step1 extends React.PureComponent {
 
   componentDidMount() {
     $.ajax({
-      url: `http://192.168.43.98:9001/authv1/mirror/show`,
+      url: `http://xupt3.fightcoder.com:9002/authv1/mirror/show`,
       type: 'GET',
       xhrFields: {
         withCredentials: true,
@@ -75,7 +74,7 @@ class Step1 extends React.PureComponent {
           });
 
           $.ajax({
-            url: `http://192.168.43.98:9001/authv1/host/show`,
+            url: `http://xupt3.fightcoder.com:9002/authv1/host/show`,
             type: 'GET',
             xhrFields: {
               withCredentials: true,
@@ -108,7 +107,7 @@ class Step1 extends React.PureComponent {
           if (values.service_member && values.service_member.length > 0) {
             values.service_member = values.service_member.join(',');
           }
-          values.host_list = getStage(values)
+          values.host_list = getStage(values);
           dispatch({
             type: 'form/saveStepFormData',
             payload: values,
@@ -124,16 +123,12 @@ class Step1 extends React.PureComponent {
             {getFieldDecorator('service_name', {
               // initialValue:
               rules: [{ required: true, message: '请输入服务名称' }],
-            })
-            (<Input placeholder="请输入服务名称" />)
-            }
+            })(<Input placeholder="请输入服务名称" />)}
           </Form.Item>
           <Form.Item {...formItemLayout} label="服务描述">
             {getFieldDecorator('service_describe', {
               rules: [{ required: true, message: '请输入服务描述' }],
-            })(
-              <TextArea style={{minHeight: 32}} placeholder="请输入服务描述" rows={4} />
-            )}
+            })(<TextArea style={{ minHeight: 32 }} placeholder="请输入服务描述" rows={4} />)}
           </Form.Item>
           <Form.Item {...formItemLayout} label="镜像">
             {getFieldDecorator('mirror_list', {
@@ -144,46 +139,60 @@ class Step1 extends React.PureComponent {
                 },
               ],
             })(
-              <Select
-                placeholder="请选择镜像"
-              >
-                {
-                  this.state.mirrorList.map( item => {
-                    return <Option value={item.id} key={item.name}>{item.name}</Option>
-                  })
-                }
+              <Select placeholder="请选择镜像">
+                {this.state.mirrorList.map(item => {
+                  return (
+                    <Option value={item.id} key={item.name}>
+                      {item.name}
+                    </Option>
+                  );
+                })}
               </Select>
             )}
           </Form.Item>
           <Form.Item {...formItemLayout} label="服务成员">
-            {getFieldDecorator('service_member')(<Select mode="tags" placeholder="输入服务成员" style={{width: '100%'}} />)}
+            {getFieldDecorator('service_member')(
+              <Select mode="tags" placeholder="输入服务成员" style={{ width: '100%' }} />
+            )}
           </Form.Item>
           <Form.Item {...formItemLayout} label="第一组">
-            {getFieldDecorator('group1')(<Select mode="multiple" placeholder="输入机器名称" style={{width: '100%'}}>
-              {
-                this.state.hostList.map( item => {
-                  return <Option value={item.id.toString()} key={item.host_name}>{item.host_name}</Option>
-                })
-              }
-            </Select>)}
+            {getFieldDecorator('group1')(
+              <Select mode="multiple" placeholder="输入机器名称" style={{ width: '100%' }}>
+                {this.state.hostList.map(item => {
+                  return (
+                    <Option value={item.id.toString()} key={item.host_name}>
+                      {item.host_name}
+                    </Option>
+                  );
+                })}
+              </Select>
+            )}
           </Form.Item>
           <Form.Item {...formItemLayout} label="第二组">
-            {getFieldDecorator('group2')(<Select mode="multiple" placeholder="输入机器名称" style={{width: '100%'}}>
-              {
-                this.state.hostList.map( item => {
-                  return <Option value={item.id.toString()} key={item.host_name}>{item.host_name}</Option>
-                })
-              }
-            </Select>)}
+            {getFieldDecorator('group2')(
+              <Select mode="multiple" placeholder="输入机器名称" style={{ width: '100%' }}>
+                {this.state.hostList.map(item => {
+                  return (
+                    <Option value={item.id.toString()} key={item.host_name}>
+                      {item.host_name}
+                    </Option>
+                  );
+                })}
+              </Select>
+            )}
           </Form.Item>
           <Form.Item {...formItemLayout} label="第三组">
-            {getFieldDecorator('group3')(<Select mode="multiple" placeholder="输入机器名称" style={{width: '100%'}}>
-              {
-                this.state.hostList.map( item => {
-                  return <Option value={item.id.toString()} key={item.host_name}>{item.host_name}</Option>
-                })
-              }
-            </Select>)}
+            {getFieldDecorator('group3')(
+              <Select mode="multiple" placeholder="输入机器名称" style={{ width: '100%' }}>
+                {this.state.hostList.map(item => {
+                  return (
+                    <Option value={item.id.toString()} key={item.host_name}>
+                      {item.host_name}
+                    </Option>
+                  );
+                })}
+              </Select>
+            )}
           </Form.Item>
           <Form.Item
             wrapperCol={{
