@@ -5,7 +5,7 @@ import {Badge, Card, message, Table} from 'antd';
 import moment from 'moment/moment';
 import styles from './index.less';
 
-const statusMap = ['processing', 'success', 'error'];
+const statusMap = ['processing', 'processing', 'success', 'error'];
 const status = ['待开始', '进行中', '成功', '失败'];
 
 const data = [];

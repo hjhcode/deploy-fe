@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
 import $ from 'jquery';
-import {Button, Card, Collapse, Divider, message, Spin, Table} from 'antd';
+import {Button, Card, Collapse, Divider, message, Spin, Table, Badge} from 'antd';
 import DescriptionList from 'components/DescriptionList';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './index.less';
@@ -9,7 +9,8 @@ import styles from './index.less';
 const {Description} = DescriptionList;
 const {Panel} = Collapse;
 
-const statusArr = ['待部署', '部署中', '部署失败', '跳过部署', '部署完成'];
+const status = ['待部署', '部署中', '部署失败', '跳过部署', '部署完成'];
+const statusMap = ['processing', 'processing', 'error', 'processing', 'succeed'];
 
 const data = [];
 for (let i = 0; i < 5; i++) {
@@ -327,7 +328,7 @@ export default class AdvancedProfile extends Component {
         title: '部署状态',
         dataIndex: 'machine_status',
         render(val) {
-          return <span>{statusArr[val]}</span>
+          return <span>{status[val]}</span>
         },
       },
       // {
